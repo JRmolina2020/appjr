@@ -114,7 +114,7 @@ export default {
             });
         },
         async route() {
-            let response = await axios.post(this.urlusers, this.form);
+            let response = await axios.post("users", this.form);
 
             try {
                 Swal.fire({
@@ -131,7 +131,7 @@ export default {
             }
         },
         login() {
-            axios.post("users", this.form).then((response) => {
+            axios.post("login", this.form).then((response) => {
                 window.location.replace("/bills");
             });
         },

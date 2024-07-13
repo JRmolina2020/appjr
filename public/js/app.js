@@ -3715,7 +3715,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.post(_this2.urlusers, _this2.form);
+                return axios.post("users", _this2.form);
 
               case 2:
                 response = _context.sent;
@@ -3743,7 +3743,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }))();
     },
     login: function login() {
-      axios.post("users", this.form).then(function (response) {
+      axios.post("login", this.form).then(function (response) {
         window.location.replace("/bills");
       });
     },
