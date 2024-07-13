@@ -3721,7 +3721,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 response = _context.sent;
 
                 try {
-                  _this2.login();
+                  Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Validando...",
+                    text: "redireccionando al panel"
+                  });
+                  setTimeout(function () {
+                    _this2.login();
+                  }, 2000);
                 } catch (error) {
                   console.log(error.response);
                 }

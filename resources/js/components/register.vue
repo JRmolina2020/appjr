@@ -117,7 +117,15 @@ export default {
             let response = await axios.post(this.urlusers, this.form);
 
             try {
-                this.login();
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Validando...",
+                    text: "redireccionando al panel",
+                });
+                setTimeout(() => {
+                    this.login();
+                }, 2000);
             } catch (error) {
                 console.log(error.response);
             }
