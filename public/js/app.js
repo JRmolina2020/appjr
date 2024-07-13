@@ -3724,12 +3724,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                   Swal.fire({
                     position: "center",
                     icon: "success",
-                    title: "Validando...",
-                    text: "redireccionando al panel"
+                    title: "Registrado",
+                    text: "Información registrada"
                   });
-                  setTimeout(function () {
-                    _this2.login();
-                  }, 2000);
+
+                  _this2.clear();
                 } catch (error) {
                   console.log(error.response);
                 }

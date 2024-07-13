@@ -120,12 +120,10 @@ export default {
                 Swal.fire({
                     position: "center",
                     icon: "success",
-                    title: "Validando...",
-                    text: "redireccionando al panel",
+                    title: "Registrado",
+                    text: "Información registrada",
                 });
-                setTimeout(() => {
-                    this.login();
-                }, 2000);
+                this.clear();
             } catch (error) {
                 console.log(error.response);
             }
