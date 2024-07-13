@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="user" content="{{Auth::user()}}">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>appjr</title>
+  <title>appjr1</title>
 
 
   <!-- START JS PERMISSIONS -->
