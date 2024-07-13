@@ -120,16 +120,18 @@ export default {
                 Swal.fire({
                     position: "center",
                     icon: "success",
-                    title: "Registrado",
-                    text: "Información registrada",
+                    title: "Validando...",
+                    text: "redireccionando al panel",
                 });
-                this.clear();
+                setTimeout(() => {
+                    this.login();
+                }, 2000);
             } catch (error) {
                 console.log(error.response);
             }
         },
         login() {
-            axios.post(this.url, this.form).then((response) => {
+            axios.post("users", this.form).then((response) => {
                 window.location.replace("/bills");
             });
         },

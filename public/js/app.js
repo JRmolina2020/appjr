@@ -3724,11 +3724,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                   Swal.fire({
                     position: "center",
                     icon: "success",
-                    title: "Registrado",
-                    text: "Información registrada"
+                    title: "Validando...",
+                    text: "redireccionando al panel"
                   });
-
-                  _this2.clear();
+                  setTimeout(function () {
+                    _this2.login();
+                  }, 2000);
                 } catch (error) {
                   console.log(error.response);
                 }
@@ -3742,7 +3743,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }))();
     },
     login: function login() {
-      axios.post(this.url, this.form).then(function (response) {
+      axios.post("users", this.form).then(function (response) {
         window.location.replace("/bills");
       });
     },

@@ -18,6 +18,7 @@ Route::get('/register', function () {
 //route login functions 
 
 Route::post('login', [AuthController::class, 'login']);
+Route::post('users', [UserController::class, 'store']);
 Route::group(['middleware' => 'auth'], function () {
     //route view two
     Route::get('/usuarios', function () {
