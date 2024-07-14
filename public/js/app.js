@@ -2186,38 +2186,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -2635,36 +2603,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -77286,7 +77224,7 @@ var render = function () {
       [
         _c("store-bill", { ref: "form_bill" }),
         _vm._v(" "),
-        _c("list-bill", { staticClass: "mt-3", on: { show: _vm.show } }),
+        _c("list-bill", { on: { show: _vm.show } }),
       ],
       1
     ),
@@ -77318,34 +77256,75 @@ var render = function () {
   return _c(
     "div",
     [
+      _c(
+        "div",
+        { staticClass: "card-body" },
+        _vm._l(_vm.bills, function (item) {
+          return _c("div", { key: item.id }, [
+            _c("div", { staticClass: "card card-primary card-outline" }, [
+              _c("div", { staticClass: "card-header" }, [
+                _c("h5", { staticClass: "card-title" }, [
+                  _vm._v(_vm._s(item.name)),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-tools" }, [
+                  _c("a", { staticClass: "btn btn-tool" }, [
+                    _vm._v("$" + _vm._s(_vm._f("currency")(item.price))),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      staticClass: "btn btn-tool",
+                      attrs: { href: "#" },
+                      on: {
+                        click: function ($event) {
+                          return _vm.$emit("show", item)
+                        },
+                      },
+                    },
+                    [_c("i", { staticClass: "fi fi-check" })]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      staticClass: "btn btn-tool",
+                      attrs: { href: "#" },
+                      on: {
+                        click: function ($event) {
+                          return _vm.destroy(item.id)
+                        },
+                      },
+                    },
+                    [_c("i", { staticClass: "fi fi-trash" })]
+                  ),
+                ]),
+              ]),
+            ]),
+          ])
+        }),
+        0
+      ),
+      _vm._v(" "),
+      _vm._l(_vm.billstot, function (item, index) {
+        return _c(
+          "div",
+          {
+            key: "b" + index,
+            staticClass: "alert alert-dark",
+            attrs: { role: "alert" },
+          },
+          [
+            _c("p", [
+              _vm._v("TOTAL $" + _vm._s(_vm._f("currency")(item.price))),
+            ]),
+          ]
+        )
+      }),
+      _vm._v(" "),
       _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-4" }, [
-          _c("div", { staticClass: "form-group" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.filters.name.value,
-                  expression: "filters.name.value",
-                },
-              ],
-              staticClass: "form-control form-control-sm",
-              attrs: { type: "text", placeholder: "Buscar gastos" },
-              domProps: { value: _vm.filters.name.value },
-              on: {
-                input: function ($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.filters.name, "value", $event.target.value)
-                },
-              },
-            }),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-8" }, [
+        _c("div", { staticClass: "col-12" }, [
           _c("div", { staticClass: "input-group" }, [
             _c("input", {
               directives: [
@@ -77413,139 +77392,6 @@ var render = function () {
           ]),
         ]),
       ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "table-responsive" },
-        [
-          _c("VTable", {
-            staticClass: "table table-dark",
-            attrs: {
-              data: _vm.bills,
-              filters: _vm.filters,
-              "page-size": 5,
-              currentPage: _vm.currentPage,
-            },
-            on: {
-              "update:currentPage": function ($event) {
-                _vm.currentPage = $event
-              },
-              "update:current-page": function ($event) {
-                _vm.currentPage = $event
-              },
-              totalPagesChanged: function ($event) {
-                _vm.totalPages = $event
-              },
-            },
-            scopedSlots: _vm._u([
-              {
-                key: "head",
-                fn: function () {
-                  return [
-                    _c(
-                      "tr",
-                      [
-                        _c("VTh", { attrs: { sortKey: "name" } }, [
-                          _vm._v("Concepto"),
-                        ]),
-                        _vm._v(" "),
-                        _c("th", [_vm._v("Monto")]),
-                        _vm._v(" "),
-                        _c("th", [_vm._v("Op")]),
-                      ],
-                      1
-                    ),
-                  ]
-                },
-                proxy: true,
-              },
-              {
-                key: "body",
-                fn: function (ref) {
-                  var rows = ref.rows
-                  return _vm._l(rows, function (row) {
-                    return _c("tr", { key: row.id }, [
-                      _c("td", [_vm._v(_vm._s(row.name))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(_vm._f("currency")(row.price)))]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn bg-warning btn-sm",
-                            attrs: { type: "button" },
-                            on: {
-                              click: function ($event) {
-                                return _vm.$emit("show", row)
-                              },
-                            },
-                          },
-                          [_c("i", { staticClass: "fi fi-eye" })]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn bg-danger btn-sm",
-                            attrs: { type: "button" },
-                            on: {
-                              click: function ($event) {
-                                return _vm.destroy(row.id)
-                              },
-                            },
-                          },
-                          [_c("i", { staticClass: "fi fi-trash" })]
-                        ),
-                      ]),
-                    ])
-                  })
-                },
-              },
-            ]),
-          }),
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "text-xs-center" },
-        [
-          _c("VTPagination", {
-            attrs: {
-              currentPage: _vm.currentPage,
-              "total-pages": _vm.totalPages,
-              "boundary-links": true,
-            },
-            on: {
-              "update:currentPage": function ($event) {
-                _vm.currentPage = $event
-              },
-              "update:current-page": function ($event) {
-                _vm.currentPage = $event
-              },
-            },
-          }),
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _vm._l(_vm.billstot, function (item, index) {
-        return _c(
-          "div",
-          {
-            key: "b" + index,
-            staticClass: "alert alert-dark",
-            attrs: { role: "alert" },
-          },
-          [
-            _c("p", [
-              _vm._v("TOT HOY $" + _vm._s(_vm._f("currency")(item.price))),
-            ]),
-          ]
-        )
-      }),
     ],
     2
   )
@@ -77656,7 +77502,7 @@ var render = function () {
                             expression: "form.name",
                           },
                         ],
-                        staticClass: "form-control form-control-sm",
+                        staticClass: "form-control",
                         class: {
                           "is-invalid":
                             _vm.submitted && _vm.errors.has("concepto"),
@@ -77712,7 +77558,7 @@ var render = function () {
                                 "{\n                                    currency: 'USD',\n                                    precision: 0,\n                                    locale: 'en',\n                                }",
                             },
                           ],
-                          staticClass: "form-control form-control-sm",
+                          staticClass: "form-control",
                           class: {
                             "is-invalid":
                               _vm.submitted && _vm.errors.has("monto total"),
@@ -77853,34 +77699,86 @@ var render = function () {
   return _c(
     "div",
     [
+      _c(
+        "div",
+        { staticClass: "card-body" },
+        _vm._l(_vm.investments, function (item) {
+          return _c("div", { key: item.id }, [
+            _c("div", { staticClass: "card card-primary card-outline" }, [
+              _c("div", { staticClass: "card-header" }, [
+                _c("h5", { staticClass: "card-title" }, [
+                  _vm._v(_vm._s(item.name)),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-tools" }, [
+                  _c("a", { staticClass: "btn btn-tool" }, [
+                    _vm._v(
+                      "$" +
+                        _vm._s(_vm._f("currency")(item.price)) +
+                        "\n                        "
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("a", { staticClass: "btn btn-tool" }, [
+                    _vm._v(_vm._s(item.quantity)),
+                  ]),
+                  _vm._v(" "),
+                  _c("a", { staticClass: "btn btn-tool" }, [
+                    _vm._v(
+                      "$" +
+                        _vm._s(_vm._f("currency")(item.quantity * item.price))
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      staticClass: "btn btn-tool",
+                      attrs: { href: "#" },
+                      on: {
+                        click: function ($event) {
+                          return _vm.$emit("show", item)
+                        },
+                      },
+                    },
+                    [_c("i", { staticClass: "fi fi-check" })]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      staticClass: "btn btn-tool",
+                      attrs: { href: "#" },
+                      on: {
+                        click: function ($event) {
+                          return _vm.destroy(item.id)
+                        },
+                      },
+                    },
+                    [_c("i", { staticClass: "fi fi-trash" })]
+                  ),
+                ]),
+              ]),
+            ]),
+          ])
+        }),
+        0
+      ),
+      _vm._v(" "),
+      _vm._l(_vm.investmentstot, function (item, index) {
+        return _c(
+          "div",
+          {
+            key: "b" + index,
+            staticClass: "alert alert-dark",
+            attrs: { role: "alert" },
+          },
+          [_c("p", [_vm._v("TOTAL $" + _vm._s(_vm._f("currency")(item.tot)))])]
+        )
+      }),
+      _vm._v(" "),
       _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-4" }, [
-          _c("div", { staticClass: "form-group" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.filters.name.value,
-                  expression: "filters.name.value",
-                },
-              ],
-              staticClass: "form-control form-control-sm",
-              attrs: { type: "text", placeholder: "Buscar inversión" },
-              domProps: { value: _vm.filters.name.value },
-              on: {
-                input: function ($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.filters.name, "value", $event.target.value)
-                },
-              },
-            }),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-8" }, [
+        _c("div", { staticClass: "col-12" }, [
           _c("div", { staticClass: "input-group" }, [
             _c("input", {
               directives: [
@@ -77948,147 +77846,6 @@ var render = function () {
           ]),
         ]),
       ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "table-responsive" },
-        [
-          _c("VTable", {
-            staticClass: "table table-dark",
-            attrs: {
-              data: _vm.investments,
-              filters: _vm.filters,
-              "page-size": 5,
-              currentPage: _vm.currentPage,
-            },
-            on: {
-              "update:currentPage": function ($event) {
-                _vm.currentPage = $event
-              },
-              "update:current-page": function ($event) {
-                _vm.currentPage = $event
-              },
-              totalPagesChanged: function ($event) {
-                _vm.totalPages = $event
-              },
-            },
-            scopedSlots: _vm._u([
-              {
-                key: "head",
-                fn: function () {
-                  return [
-                    _c(
-                      "tr",
-                      [
-                        _c("VTh", { attrs: { sortKey: "name" } }, [
-                          _vm._v("Concepto"),
-                        ]),
-                        _vm._v(" "),
-                        _c("th", [_vm._v("Precio")]),
-                        _vm._v(" "),
-                        _c("th", [_vm._v("Cant")]),
-                        _vm._v(" "),
-                        _c("th", [_vm._v("Total")]),
-                        _vm._v(" "),
-                        _c("th", [_vm._v("Op")]),
-                      ],
-                      1
-                    ),
-                  ]
-                },
-                proxy: true,
-              },
-              {
-                key: "body",
-                fn: function (ref) {
-                  var rows = ref.rows
-                  return _vm._l(rows, function (row) {
-                    return _c("tr", { key: row.id }, [
-                      _c("td", [_vm._v(_vm._s(row.name))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(row.quantity))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(_vm._f("currency")(row.price)))]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _vm._v(
-                          _vm._s(_vm._f("currency")(row.price * row.quantity))
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn bg-warning btn-sm",
-                            attrs: { type: "button" },
-                            on: {
-                              click: function ($event) {
-                                return _vm.$emit("show", row)
-                              },
-                            },
-                          },
-                          [_c("i", { staticClass: "fi fi-eye" })]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn bg-danger btn-sm",
-                            attrs: { type: "button" },
-                            on: {
-                              click: function ($event) {
-                                return _vm.destroy(row.id)
-                              },
-                            },
-                          },
-                          [_c("i", { staticClass: "fi fi-trash" })]
-                        ),
-                      ]),
-                    ])
-                  })
-                },
-              },
-            ]),
-          }),
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "text-xs-center" },
-        [
-          _c("VTPagination", {
-            attrs: {
-              currentPage: _vm.currentPage,
-              "total-pages": _vm.totalPages,
-              "boundary-links": true,
-            },
-            on: {
-              "update:currentPage": function ($event) {
-                _vm.currentPage = $event
-              },
-              "update:current-page": function ($event) {
-                _vm.currentPage = $event
-              },
-            },
-          }),
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _vm._l(_vm.investmentstot, function (item, index) {
-        return _c(
-          "div",
-          {
-            key: "b" + index,
-            staticClass: "alert alert-dark",
-            attrs: { role: "alert" },
-          },
-          [_c("p", [_vm._v("TOT $" + _vm._s(_vm._f("currency")(item.tot)))])]
-        )
-      }),
     ],
     2
   )
@@ -78202,7 +77959,7 @@ var render = function () {
                             expression: "form.name",
                           },
                         ],
-                        staticClass: "form-control form-control-sm",
+                        staticClass: "form-control",
                         class: {
                           "is-invalid":
                             _vm.submitted && _vm.errors.has("concepto"),
@@ -78258,7 +78015,7 @@ var render = function () {
                                 "{\n                                    currency: 'USD',\n                                    precision: 0,\n                                    locale: 'en',\n                                }",
                             },
                           ],
-                          staticClass: "form-control form-control-sm",
+                          staticClass: "form-control",
                           class: {
                             "is-invalid":
                               _vm.submitted && _vm.errors.has("monto total"),
@@ -78432,11 +78189,11 @@ var render = function () {
               expression: "form.email",
             },
           ],
-          staticClass: "form-control form-control-sm",
+          staticClass: "form-control",
           class: {
             "is-invalid": _vm.submitted && _vm.errors.has("email"),
           },
-          attrs: { type: "email", placeholder: "Email", name: "email" },
+          attrs: { type: "email", placeholder: "Correo", name: "email" },
           domProps: { value: _vm.form.email },
           on: {
             input: function ($event) {
@@ -78475,15 +78232,11 @@ var render = function () {
               expression: "'required|max:15|min:3'",
             },
           ],
-          staticClass: "form-control form-control-sm",
+          staticClass: "form-control",
           class: {
             "is-invalid": _vm.submitted && _vm.errors.has("password"),
           },
-          attrs: {
-            type: "password",
-            name: "password",
-            placeholder: "Password",
-          },
+          attrs: { type: "password", name: "password", placeholder: "Clave" },
           domProps: { value: _vm.form.password },
           on: {
             input: function ($event) {
@@ -79044,7 +78797,7 @@ var render = function () {
           class: {
             "is-invalid": _vm.submitted && _vm.errors.has("email"),
           },
-          attrs: { type: "email", placeholder: "Email", name: "email" },
+          attrs: { type: "email", placeholder: "Correo", name: "email" },
           domProps: { value: _vm.form.email },
           on: {
             input: function ($event) {
@@ -79087,11 +78840,7 @@ var render = function () {
           class: {
             "is-invalid": _vm.submitted && _vm.errors.has("password"),
           },
-          attrs: {
-            type: "password",
-            name: "password",
-            placeholder: "Password",
-          },
+          attrs: { type: "password", name: "password", placeholder: "Clave" },
           domProps: { value: _vm.form.password },
           on: {
             input: function ($event) {

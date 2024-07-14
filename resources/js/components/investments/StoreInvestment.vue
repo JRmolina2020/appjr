@@ -34,7 +34,7 @@
                                 <input
                                     type="text"
                                     v-validate="'required|max:30|min:3'"
-                                    class="form-control form-control-sm"
+                                    class="form-control"
                                     :class="{
                                         'is-invalid':
                                             submitted && errors.has('concepto'),
@@ -55,7 +55,7 @@
                                 <label for>Precio</label>
                                 <currency-input
                                     v-validate="'|required|min_value:0'"
-                                    class="form-control form-control-sm"
+                                    class="form-control"
                                     v-currency="{
                                         currency: 'USD',
                                         precision: 0,

@@ -28,7 +28,7 @@
                 :class="{
                     'is-invalid': submitted && errors.has('email'),
                 }"
-                placeholder="Email"
+                placeholder="Correo"
                 v-model="form.email"
                 name="email"
             />
@@ -44,7 +44,7 @@
                 type="password"
                 v-model="form.password"
                 name="password"
-                placeholder="Password"
+                placeholder="Clave"
                 v-validate="'required|max:15|min:3'"
                 class="form-control form-control-sm"
                 :class="{

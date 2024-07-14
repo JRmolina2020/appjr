@@ -2,7 +2,7 @@
     <div>
         <section class="section">
             <store-bill ref="form_bill"></store-bill>
-            <list-bill v-on:show="show" class="mt-3"></list-bill>
+            <list-bill v-on:show="show"></list-bill>
         </section>
     </div>
 </template>

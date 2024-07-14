@@ -1,17 +1,50 @@
 <template>
     <div>
-        <div class="row">
-            <div class="col-4">
-                <div class="form-group">
-                    <input
-                        type="text"
-                        class="form-control form-control-sm"
-                        v-model="filters.name.value"
-                        placeholder="Buscar inversión"
-                    />
+        <div class="card-body">
+            <div v-for="item in investments" :key="item.id">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h5 class="card-title">{{ item.name }}</h5>
+                        <div class="card-tools">
+                            <a class="btn btn-tool"
+                                >${{ item.price | currency }}
+                            </a>
+                            <a class="btn btn-tool">{{ item.quantity }}</a>
+                            <a class="btn btn-tool"
+                                >${{
+                                    (item.quantity * item.price) | currency
+                                }}</a
+                            >
+                            <a
+                                href="#"
+                                class="btn btn-tool"
+                                @click="$emit('show', item)"
+                            >
+                                <i class="fi fi-check"></i>
+                            </a>
+                            <a
+                                href="#"
+                                class="btn btn-tool"
+                                @click="destroy(item.id)"
+                            >
+                                <i class="fi fi-trash"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-8">
+        </div>
+
+        <div
+            class="alert alert-dark"
+            v-for="(item, index) in investmentstot"
+            :key="'b' + index"
+            role="alert"
+        >
+            <p>TOTAL ${{ item.tot | currency }}</p>
+        </div>
+        <div class="row">
+            <div class="col-12">
                 <div class="input-group">
                     <input
                         class="form-control form-control-sm"
@@ -36,69 +69,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="table-responsive">
-            <VTable
-                :data="investments"
-                :filters="filters"
-                :page-size="5"
-                :currentPage.sync="currentPage"
-                @totalPagesChanged="totalPages = $event"
-                class="table table-dark"
-            >
-                <template #head>
-                    <tr>
-                        <VTh sortKey="name">Concepto</VTh>
-                        <th>Precio</th>
-                        <th>Cant</th>
-                        <th>Total</th>
-                        <th>Op</th>
-                    </tr>
-                </template>
-                <template #body="{ rows }">
-                    <tr v-for="row in rows" :key="row.id">
-                        <td>{{ row.name }}</td>
-                        <td>{{ row.quantity }}</td>
-                        <td>{{ row.price | currency }}</td>
-                        <td>{{ (row.price * row.quantity) | currency }}</td>
-
-                        <td>
-                            <button
-                                type="button"
-                                @click="$emit('show', row)"
-                                class="btn bg-warning btn-sm"
-                            >
-                                <i class="fi fi-eye"></i>
-                            </button>
-                            <button
-                                type="button"
-                                @click="destroy(row.id)"
-                                class="btn bg-danger btn-sm"
-                            >
-                                <i class="fi fi-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                </template>
-            </VTable>
-        </div>
-
-        <div class="text-xs-center">
-            <VTPagination
-                :currentPage.sync="currentPage"
-                :total-pages="totalPages"
-                :boundary-links="true"
-            />
-        </div>
-
-        <div
-            class="alert alert-dark"
-            v-for="(item, index) in investmentstot"
-            :key="'b' + index"
-            role="alert"
-        >
-            <p>TOT ${{ item.tot | currency }}</p>
         </div>
     </div>
 </template>
