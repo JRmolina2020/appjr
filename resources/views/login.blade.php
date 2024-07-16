@@ -14,6 +14,10 @@
         <div id="app" class="mt-3">
           <login></login>
         </div>
+
+
+        <a href="/google-auth/redirect">SSO GOOGLE</a>
+
       </div>
     </div>
   </div>

@@ -13,7 +13,9 @@ class BillController extends Controller
 {
     public function index($date, $datetwo)
     {
+
         $user_id = Auth::id();
+
         $bills = DB::table('bills as b')
             ->join('users as u', 'u.id', '=', 'b.user_id')
             ->select(

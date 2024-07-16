@@ -7,6 +7,8 @@ use App\Http\Controllers\API\PermissionController;
 use App\Http\Controllers\API\BillController;
 use App\Http\Controllers\API\InvestmentController;
 use App\Http\Controllers\AuthController;
+use Laravel\Socialite\Facades\Socialite;
+
 
 //routes view one
 Route::get('/', function () {
@@ -17,6 +19,18 @@ Route::get('/register', function () {
 })->name('register');
 //route login functions 
 
+
+//socialite
+Route::get('/google-auth/redirect', function () {
+    return Socialite::driver('google')->redirect();
+});
+
+Route::get('/google-auth/callback', function () {
+    $user = Socialite::driver('google')->user();
+
+    // $user->token
+});
+//end
 Route::post('login', [AuthController::class, 'login']);
 Route::post('users', [UserController::class, 'store']);
 Route::group(['middleware' => 'auth'], function () {
