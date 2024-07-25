@@ -8,8 +8,20 @@
     </li>
     <li>
       <a href="{{ url('investments') }}" class="nav-link">
-        <i class="fi fi-credit-card"></i>
+        <i class="fi fi-calculator"></i>
         <p>Inversión</p>
+      </a>
+    </li>
+    <li>
+      <a href="{{ url('products') }}" class="nav-link">
+        <i class="fi fi-ticket"></i>
+        <p>Productos</p>
+      </a>
+    </li>
+    <li>
+      <a href="{{ url('factures') }}" class="nav-link">
+        <i class="fi fi-dollar"></i>
+        <p>Cotización</p>
       </a>
     </li>
     <li class="nav-item">

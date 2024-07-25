@@ -10,7 +10,7 @@ class Investment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'name', 'price', 'quantity', 'date_investment'
+        'user_id', 'product_id', 'quantity', 'date_investment'
     ];
     public function user()
     {

@@ -4,25 +4,20 @@
             <div v-for="item in investments" :key="item.id">
                 <div class="card card-primary card-outline">
                     <div class="card-header">
-                        <h5 class="card-title">{{ item.name }}</h5>
+                        <h5 class="card-title">{{ item.product }}</h5>
                         <div class="card-tools">
                             <a class="btn btn-tool"
-                                >${{ item.price | currency }}
+                                >${{ item.cost | currency }}
                             </a>
                             <a class="btn btn-tool">{{ item.quantity }}</a>
                             <a class="btn btn-tool"
                                 >${{
-                                    (item.quantity * item.price) | currency
+                                    (item.quantity * item.cost) | currency
                                 }}</a
                             >
+
                             <a
-                                href="#"
-                                class="btn btn-tool"
-                                @click="$emit('show', item)"
-                            >
-                                <i class="fi fi-check"></i>
-                            </a>
-                            <a
+                                v-if="item.stock >= item.quantity"
                                 href="#"
                                 class="btn btn-tool"
                                 @click="destroy(item.id)"
@@ -108,6 +103,7 @@ export default {
             };
             this.$store.dispatch("Investmentactions", obj);
             this.$store.dispatch("Investmenttotactions", obj);
+            this.$store.dispatch("Productsactions");
         },
         getDate() {
             let obj = {

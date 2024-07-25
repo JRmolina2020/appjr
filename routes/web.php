@@ -6,6 +6,8 @@ use App\Http\Controllers\API\RoleController;
 use App\Http\Controllers\API\PermissionController;
 use App\Http\Controllers\API\BillController;
 use App\Http\Controllers\API\InvestmentController;
+use App\Http\Controllers\API\FactureController;
+use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\AuthController;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -19,18 +21,6 @@ Route::get('/register', function () {
 })->name('register');
 //route login functions 
 
-
-//socialite
-Route::get('/google-auth/redirect', function () {
-    return Socialite::driver('google')->redirect();
-});
-
-Route::get('/google-auth/callback', function () {
-    $user = Socialite::driver('google')->user();
-
-    // $user->token
-});
-//end
 Route::post('login', [AuthController::class, 'login']);
 Route::post('users', [UserController::class, 'store']);
 Route::group(['middleware' => 'auth'], function () {
@@ -47,13 +37,18 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/perfil', function () {
         return view('users.profile');
     });
-
     Route::get('/bills', function () {
         return view('bills.index');
     });
-
     Route::get('/investments', function () {
         return view('investments.index');
+    });
+    Route::get('/factures', function () {
+        return view('factures.index');
+    });
+
+    Route::get('/products', function () {
+        return view('products.index');
     });
 
 
@@ -95,6 +90,16 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/investmentsTot/{date}/{date2}', [InvestmentController::class, 'sumTot']);
             Route::put('/investments/{id}', [InvestmentController::class, 'update']);
             Route::delete('/investments/{id}', [InvestmentController::class, 'destroy'])->where('id', '[0-9]+');
+            //fac
+            Route::get('/fac/{date}/{date2}', [FactureController::class, 'index']);
+            Route::get('/facd/{id}/', [FactureController::class, 'indexDetail']);
+            Route::get('/facg/{date}/{date2}', [FactureController::class, 'gain']);
+            Route::post('fac', [FactureController::class, 'store']);
+            Route::delete('/fac/{id}', [FactureController::class, 'destroy'])->where('id', '[0-9]+');
+            //product
+            Route::get('/products', [ProductController::class, 'index']);
+            Route::post('products', [ProductController::class, 'store']);
+            Route::put('/products/{id}', [ProductController::class, 'update']);
         });
     });
 });

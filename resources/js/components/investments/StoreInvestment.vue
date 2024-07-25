@@ -28,60 +28,29 @@
                     onKeyPress="if(event.keyCode == 13) event.returnValue = false;"
                 >
                     <div class="row">
-                        <div class="col-lg-6 col-12">
+                        <div class="col-12">
                             <div class="form-group">
-                                <label for>Producto</label>
-                                <input
-                                    type="text"
-                                    v-validate="'required|max:30|min:3'"
-                                    class="form-control"
-                                    :class="{
-                                        'is-invalid':
-                                            submitted && errors.has('concepto'),
-                                    }"
-                                    v-model="form.name"
-                                    name="concepto"
-                                />
-                                <div
-                                    v-if="submitted && errors.has('concerpto')"
-                                    class="invalid-feedback"
+                                <label>Producto</label>
+                                <v-select
+                                    :options="products"
+                                    v-model="form.product_id"
+                                    :reduce="(products) => products.id"
+                                    label="name"
                                 >
-                                    {{ errors.first("concepto") }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-12">
-                            <div class="form-group">
-                                <label for>Precio</label>
-                                <currency-input
-                                    v-validate="'|required|min_value:0'"
-                                    class="form-control"
-                                    v-currency="{
-                                        currency: 'USD',
-                                        precision: 0,
-                                        locale: 'en',
-                                    }"
-                                    :class="{
-                                        'is-invalid':
-                                            submitted &&
-                                            errors.has('monto total'),
-                                    }"
-                                    v-model.number="form.price"
-                                    name="monto total"
-                                />
-                                <div
-                                    v-if="
-                                        submitted && errors.has('monto total')
-                                    "
-                                    class="invalid-feedback"
-                                >
-                                    {{ errors.first("monto total") }}
-                                </div>
+                                    <template #search="{ attributes, events }">
+                                        <input
+                                            class="vs__search"
+                                            :required="!form.product_id"
+                                            v-bind="attributes"
+                                            v-on="events"
+                                        />
+                                    </template>
+                                </v-select>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-12 col-12">
+                        <div class="col-12">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">cant.</span>
@@ -146,7 +115,7 @@ export default {
         ModalResource,
     },
     computed: {
-        ...mapState(["urlinvestments"]),
+        ...mapState(["urlinvestments", "products"]),
     },
     data() {
         return {
@@ -154,9 +123,8 @@ export default {
             send: true,
             form: {
                 id: null,
-                name: null,
-                price: 0,
-                quantity: 0,
+                product_id: null,
+                quantity: 1,
             },
         };
     },
@@ -215,19 +183,10 @@ export default {
                 }
             }
         },
-        show(row) {
-            this.form.id = row.id;
-            this.form.name = row.name;
-            this.form.quantity = row.quantity;
-            this.form.price = parseFloat(row.price);
-            $("#model").modal("show");
-            this.send = true;
-        },
+
         clear() {
             this.form.id = null;
-            this.form.name = null;
-            this.form.price = 0;
-            this.form.quantity = 0;
+            this.form.quantity = 1;
             this.$validator.reset();
             this.send = true;
         },

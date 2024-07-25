@@ -13,7 +13,10 @@ export default new Vuex.Store({
         billstot: [],
         investments: [],
         investmentstot: [],
-       
+        fac:[],
+        facd:[],
+        facg:[],
+        products:[],
         status: false,
         urlusers: "/api/users",
         urluser: "/api/user",
@@ -23,6 +26,10 @@ export default new Vuex.Store({
         urlbillstot: "/api/billsTot",
         urlinvestments: "/api/investments",
         urlinvestmentstot: "/api/investmentsTot",
+        urlfac:'/api/fac',
+        urlfacd:'/api/facd',
+        urlfacg:'/api/facg',
+        urlproduct:'/api/products',
 
     },
     mutations: {
@@ -51,7 +58,21 @@ export default new Vuex.Store({
         Investmenttotmutations(state, item) {
             state.investmentstot = item;
         },
+    
+        Facmutations(state, item) {
+            state.fac = item;
+        },
         
+        Facdmutations(state, item) {
+            state.facd = item;
+        },
+        Facgmutations(state, item) {
+            state.facg = item;
+        },
+          
+        Productsmutations(state, item) {
+            state.products = item;
+        },
     },
 
     actions: {
@@ -128,6 +149,47 @@ export default new Vuex.Store({
             }
         },
      
-      
+        async Facactions({ commit, state },obj
+        ) {
+            try {
+                let response = await axios.get(`${state.urlfac}/${obj.prop1}/${obj.prop2}`);
+                commit("Facmutations", response.data);
+                state.status = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async Facdactions({ commit, state },obj
+        ) {
+            try {
+                let response = await axios.get(`${state.urlfacd}/${obj.prop1}`);
+                commit("Facdmutations", response.data);
+             
+                state.status = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        //ganancia
+        async Facgactions({ commit, state },obj
+        ) {
+            try {
+                let response = await axios.get(`${state.urlfacg}/${obj.prop1}/${obj.prop2}`);
+                commit("Facgmutations", response.data);
+                state.status = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async Productsactions({ commit, state }
+        ) {
+            try {
+                let response = await axios.get(`${state.urlproduct}`);
+                commit("Productsmutations", response.data);
+                state.status = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
     },
 });

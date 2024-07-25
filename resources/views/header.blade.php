@@ -24,6 +24,8 @@
   <link rel="shortcut icon" sizes="192x192" href="{{secure_asset('/img/favicon.ico') }}">
   <link rel="stylesheet" href="{{secure_asset('css/lte.min.css') }}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fontisto@v3.0.4/css/fontisto/fontisto.min.css"></i>
+<link rel="stylesheet" href="https://unpkg.com/vue-nav-tabs/themes/vue-tabs.css">
+<script src="https://unpkg.com/vue-nav-tabs/dist/vue-tabs.js"></script>
 
 </head>
 <style>

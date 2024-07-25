@@ -32,6 +32,7 @@ import vSelect from "vue-select";
 Vue.component("v-select", vSelect);
 import "vue-select/dist/vue-select.css";
 //end
+
 Vue.directive("can", function (el, binding, vnode) {
     if (Permissions.indexOf(binding.value) !== -1) {
         return (vnode.elm.hidden = false);
@@ -67,6 +68,15 @@ Vue.component(
 Vue.component(
     "investment_example",
     require("./components/investments/InvestmentExample.vue").default
+);
+
+Vue.component(
+    "facture_example",
+    require("./components/factures/FactureExample.vue").default
+);
+Vue.component(
+    "product_example",
+    require("./components/products/ProductExample.vue").default
 );
 
 
