@@ -15,8 +15,11 @@ export default new Vuex.Store({
         investmentstot: [],
         fac:[],
         facd:[],
+        fact:[],
         facg:[],
         products:[],
+        productsL:[],
+        clients:[],
         status: false,
         urlusers: "/api/users",
         urluser: "/api/user",
@@ -27,9 +30,12 @@ export default new Vuex.Store({
         urlinvestments: "/api/investments",
         urlinvestmentstot: "/api/investmentsTot",
         urlfac:'/api/fac',
+        urlfact:'/api/fact',
         urlfacd:'/api/facd',
         urlfacg:'/api/facg',
         urlproduct:'/api/products',
+        urlproductL:'/api/productsL',
+        urlclient:'/api/clients',
 
     },
     mutations: {
@@ -62,6 +68,9 @@ export default new Vuex.Store({
         Facmutations(state, item) {
             state.fac = item;
         },
+        Factmutations(state, item) {
+            state.fact = item;
+        },
         
         Facdmutations(state, item) {
             state.facd = item;
@@ -72,6 +81,12 @@ export default new Vuex.Store({
           
         Productsmutations(state, item) {
             state.products = item;
+        },
+        ProductsLmutations(state, item) {
+            state.productsL = item;
+        },
+        Clientsmutations(state, item) {
+            state.clients = item;
         },
     },
 
@@ -159,6 +174,16 @@ export default new Vuex.Store({
                 console.log(error);
             }
         },
+        async Factactions({ commit, state },obj
+        ) {
+            try {
+                let response = await axios.get(`${state.urlfact}/${obj.prop1}/${obj.prop2}`);
+                commit("Factmutations", response.data);
+                state.status = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
         async Facdactions({ commit, state },obj
         ) {
             try {
@@ -186,6 +211,26 @@ export default new Vuex.Store({
             try {
                 let response = await axios.get(`${state.urlproduct}`);
                 commit("Productsmutations", response.data);
+                state.status = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async ProductsLactions({ commit, state }
+        ) {
+            try {
+                let response = await axios.get(`${state.urlproductL}`);
+                commit("ProductsLmutations", response.data);
+                state.status = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async Clientsactions({ commit, state }
+        ) {
+            try {
+                let response = await axios.get(`${state.urlclient}`);
+                commit("Clientsmutations", response.data);
                 state.status = true;
             } catch (error) {
                 console.log(error);

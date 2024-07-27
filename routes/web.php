@@ -8,6 +8,7 @@ use App\Http\Controllers\API\BillController;
 use App\Http\Controllers\API\InvestmentController;
 use App\Http\Controllers\API\FactureController;
 use App\Http\Controllers\API\ProductController;
+use App\Http\Controllers\API\ClientController;
 use App\Http\Controllers\AuthController;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -49,6 +50,12 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/products', function () {
         return view('products.index');
+    });
+    Route::get('/products_locked', function () {
+        return view('products.product');
+    });
+    Route::get('/clients', function () {
+        return view('clients.index');
     });
 
 
@@ -94,12 +101,23 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/fac/{date}/{date2}', [FactureController::class, 'index']);
             Route::get('/facd/{id}/', [FactureController::class, 'indexDetail']);
             Route::get('/facg/{date}/{date2}', [FactureController::class, 'gain']);
+            Route::get('/fact/{date}/{date2}', [FactureController::class, 'type_sale']);
             Route::post('fac', [FactureController::class, 'store']);
             Route::delete('/fac/{id}', [FactureController::class, 'destroy'])->where('id', '[0-9]+');
             //product
             Route::get('/products', [ProductController::class, 'index']);
+            Route::get('/productsL', [ProductController::class, 'index2']);
             Route::post('products', [ProductController::class, 'store']);
             Route::put('/products/{id}', [ProductController::class, 'update']);
+            Route::put('/productsL/available/{id}', [ProductController::class, 'available']);
+            Route::put('/products/locked/{id}', [ProductController::class, 'locked']);
+
+            //client
+            Route::get('/clients', [ClientController::class, 'index']);
+            Route::post('clients', [ClientController::class, 'store']);
+            Route::put('/clients/{id}', [ClientController::class, 'update']);
+            Route::put('/clients/available/{id}', [ClientController::class, 'available']);
+            Route::put('/clients/locked/{id}', [ClientController::class, 'locked']);
         });
     });
 });

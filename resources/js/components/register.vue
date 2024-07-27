@@ -5,13 +5,13 @@
                 <input
                     type="text"
                     v-validate="'required|max:30|min:3'"
-                    class="form-control form-control-sm"
+                    class="form-control"
                     :class="{
                         'is-invalid': submitted && errors.has('name'),
                     }"
                     v-model="form.name"
                     name="name"
-                    placeholder="Nombre"
+                    placeholder="Nombre y apellido"
                 />
                 <div
                     v-if="submitted && errors.has('name')"
@@ -22,21 +22,21 @@
             </div>
 
             <input
-                type="email"
-                v-validate="'required|max:40|min:4'"
-                class="form-control form-control-sm"
+                type="text"
+                v-validate="'required|max:40|min:4|alpha_dash'"
+                class="form-control"
                 :class="{
-                    'is-invalid': submitted && errors.has('email'),
+                    'is-invalid': submitted && errors.has('negocio'),
                 }"
-                placeholder="Correo"
+                placeholder="Nombre de tu negocio"
                 v-model="form.email"
-                name="email"
+                name="negocio"
             />
             <div
-                v-if="submitted && errors.has('email')"
+                v-if="submitted && errors.has('negocio')"
                 class="invalid-feedback"
             >
-                {{ errors.first("email") }}
+                {{ errors.first("negocio") }}
             </div>
         </div>
         <div class="form-group">
@@ -44,9 +44,9 @@
                 type="password"
                 v-model="form.password"
                 name="password"
-                placeholder="Clave"
+                placeholder="Clave de ingreso"
                 v-validate="'required|max:15|min:3'"
-                class="form-control form-control-sm"
+                class="form-control"
                 :class="{
                     'is-invalid': submitted && errors.has('password'),
                 }"

@@ -38,18 +38,26 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>Nit.</th>
-                                        <th>Nombre</th>
-                                        <th>Telefono</th>
-                                        <th>Fecha</th>
+                                        <th style="color: black">Nit.</th>
+                                        <th style="color: black">Nombre</th>
+                                        <th style="color: black">Telefono</th>
+                                        <th style="color: black">Fecha</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>{{ item.nit }}</td>
-                                        <td>{{ item.name_client }}</td>
-                                        <td>{{ item.phone }}</td>
-                                        <td>{{ item.date_facture }}</td>
+                                        <td style="color: black">
+                                            {{ item.nit }}
+                                        </td>
+                                        <td style="color: black">
+                                            {{ item.name_client }}
+                                        </td>
+                                        <td style="color: black">
+                                            {{ item.tel }}
+                                        </td>
+                                        <td style="color: black">
+                                            {{ item.date_facture }}
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -65,7 +73,7 @@
                                     class="table table-striped"
                                 >
                                     <template #head>
-                                        <tr>
+                                        <tr style="color: black">
                                             <th>Produto</th>
                                             <th>Precio</th>
                                             <th>Cant</th>
@@ -73,7 +81,11 @@
                                         </tr>
                                     </template>
                                     <template #body="{ rows }">
-                                        <tr v-for="row in rows" :key="row.id">
+                                        <tr
+                                            style="color: black"
+                                            v-for="row in rows"
+                                            :key="row.id"
+                                        >
                                             <th scope="row">
                                                 {{ row.name_product }}
                                             </th>

@@ -52,6 +52,7 @@
                             @click.prevent="setActive('profile')"
                             :class="{ active: isActive('profile') }"
                             href="#profile"
+                            @click="calculateEfecty()"
                             >Cliente</a
                         >
                     </li>
@@ -105,6 +106,7 @@
                         id="view"
                     >
                         <div class="table-responsive">
+                            T:{{ sumProducts }}
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
@@ -141,7 +143,13 @@
                                                 <i class="fi fi-angle-up"></i>
                                             </button>
                                         </td>
-                                        <td>{{ item.sub | currency }}</td>
+                                        <td>
+                                            {{
+                                                (form.product[index].sub =
+                                                    item.price * item.cant)
+                                                    | currency
+                                            }}
+                                        </td>
                                         <td>
                                             <button
                                                 type="button"
@@ -167,37 +175,80 @@
                             autocomplete="off"
                             onKeyPress="if(event.keyCode == 13) event.returnValue = false;"
                         >
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        v-model="form.nit"
-                                        placeholder="Nit/cc"
-                                        required
-                                    />
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>Cliente</label>
+                                        <v-select
+                                            :options="clients"
+                                            v-model="form.client_id"
+                                            :reduce="(clients) => clients.id"
+                                            label="name"
+                                        >
+                                            <template
+                                                #search="{ attributes, events }"
+                                            >
+                                                <input
+                                                    class="vs__search"
+                                                    :required="!form.client_id"
+                                                    v-bind="attributes"
+                                                    v-on="events"
+                                                />
+                                            </template>
+                                        </v-select>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        v-model="form.name_client"
-                                        placeholder="Nombre/Apellido"
-                                        required
-                                    />
+                            <div class="row">
+                                <div class="col-lg-12 col-6">
+                                    <small i class="form-text text-muted"
+                                        >TOTAL VENTA ${{
+                                            onViewTot | currency
+                                        }}</small
+                                    >
                                 </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        v-model="form.phone"
-                                        placeholder="WhatsApp"
-                                        required
-                                    />
+                                <div class="col-lg-6 col-12">
+                                    <div class="form-group">
+                                        <currency-input
+                                            required
+                                            v-validate="{
+                                                required: true,
+                                                min_value: 0,
+                                                max_value: onViewTot,
+                                            }"
+                                            :class="{
+                                                'is-invalid':
+                                                    submitted &&
+                                                    errors.has('efectivo'),
+                                            }"
+                                            v-model="form.efecty"
+                                            @keyup="equalsTot()"
+                                            class="form-control"
+                                            v-currency="{
+                                                currency: 'USD',
+                                                precision: 0,
+                                                locale: 'en',
+                                            }"
+                                        />
+                                        <small i class="form-text text-muted"
+                                            >total efectivo
+                                            {{ form.efecty | currency }}</small
+                                        >
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-12">
+                                    <div class="form-group">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            v-model="form.other"
+                                            disabled
+                                        />
+                                        <small i class="form-text text-muted"
+                                            >total tranferencia
+                                            {{ form.other | currency }}</small
+                                        >
+                                    </div>
                                 </div>
                             </div>
 
@@ -267,22 +318,31 @@ export default {
 
     created() {
         this.getListProduct();
+        this.getlistClient();
     },
     computed: {
-        ...mapState(["urlfac", "products", "facd"]),
+        ...mapState(["urlfac", "products", "clients", "facd"]),
         onViewTot() {
             let subtot = 0;
             this.form.product.map((data) => {
-                subtot = subtot + data.sub;
+                subtot = parseInt(subtot) + parseInt(data.sub);
             });
             return subtot;
         },
+
         filteredList() {
             return this.products.filter((products) => {
                 return products.name
                     .toLowerCase()
                     .includes(this.filters.toLowerCase());
             });
+        },
+        sumProducts() {
+            let tot = 0;
+            this.form.product.map((data) => {
+                tot = parseInt(tot) + parseInt(data.cant);
+            });
+            return tot;
         },
     },
     data() {
@@ -294,10 +354,10 @@ export default {
             filters: "",
             form: {
                 id: null,
-                nit: 1,
-                name_client: 1,
-                phone: 12221,
+                client_id: null,
                 tot: 1,
+                efecty: null,
+                other: 0,
                 product: [],
             },
         };
@@ -322,6 +382,9 @@ export default {
         getListProduct() {
             this.$store.dispatch("Productsactions");
         },
+        getlistClient() {
+            this.$store.dispatch("Clientsactions");
+        },
         getList() {
             let obj = {
                 prop1: date_now,
@@ -331,6 +394,8 @@ export default {
 
             this.$store.dispatch("Facactions", obj);
             this.$store.dispatch("Facgactions", obj);
+            this.$store.dispatch("Factactions", obj);
+            this.$store.dispatch("Productsactions");
         },
         add(id) {
             this.$validator.validate().then((valid) => {
@@ -375,6 +440,7 @@ export default {
 
                     this.getList();
                     this.form.product = [];
+                    console.log(this.form);
                 } catch (error) {
                     console.log(error.response);
                 }
@@ -396,6 +462,7 @@ export default {
                 namep: item.name,
                 stock: item.stock,
             });
+            this.calculateEfecty();
 
             Swal.fire({
                 position: "center",
@@ -404,7 +471,7 @@ export default {
                 showConfirmButton: false,
                 timer: 500,
             });
-            this.calculate(index);
+
             this.ProductRowUnique();
         },
         // show(row) {
@@ -421,11 +488,12 @@ export default {
         // },
         clear() {
             this.form.id = null;
-            this.form.name_client = null;
-            this.form.nit = null;
-            this.form.phone = null;
+            this.form.client_id = null;
+            this.form.efecty = null;
+            this.form.other = 0;
             this.$validator.reset();
             this.send = true;
+            this.activeItem = "home";
         },
         typesaleData() {
             if (this.typesale == 0) {
@@ -452,24 +520,19 @@ export default {
 
         incrementDetail(index, stock) {
             this.form.product[index].cant++;
-
-            this.calculate(index);
+            this.calculateEfecty();
         },
         decrementDetail(index) {
             let num = this.form.product[index].cant;
             if (num != 1) {
                 this.form.product[index].cant--;
             }
-            this.calculate(index);
+            this.calculateEfecty();
         },
-        calculate(index) {
-            let sub = 0;
-            sub =
-                this.form.product[index].price * this.form.product[index].cant;
-            this.form.product[index].sub = sub;
-        },
+
         removeDetail(index) {
             this.form.product.splice(index, 1);
+            this.calculateEfecty();
         },
         ProductRowUnique() {
             const cartProduct = this.form.product.reduce(
@@ -498,6 +561,14 @@ export default {
                 []
             );
             this.form.product = cartProduct;
+        },
+        equalsTot() {
+            this.form.other = this.onViewTot - this.form.efecty;
+        },
+        calculateEfecty() {
+            this.form.efecty = this.onViewTot;
+            this.form.other = 0;
+            this.filters = "";
         },
     },
 };

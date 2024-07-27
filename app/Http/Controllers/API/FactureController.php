@@ -21,11 +21,11 @@ class FactureController extends Controller
             $facture = new Facture();
             $facture->date_facture = $mytime->toDateString();
             $facture->user_id =  auth()->id();
-            $facture->nit = $request->nit;
-            $facture->name_client = $request->name_client;
-            $facture->phone = $request->phone;
+            $facture->client_id = $request->client_id;
             $facture->tot = $request->tot;
             $facture->status = 1;
+            $facture->efecty = $request->efecty;
+            $facture->other = $request->other;
             $facture->save();
             $details = $request->product;
             foreach ($details as $ep => $det) {
@@ -72,13 +72,16 @@ class FactureController extends Controller
         $user_id = Auth::id();
         $fac = DB::table('factures as f')
             ->join('users as u', 'u.id', '=', 'f.user_id')
+            ->join('clients as c', 'c.id', '=', 'f.client_id')
             ->select(
                 'f.id',
-                'f.nit',
-                'f.name_client',
-                'f.phone',
+                'c.nit as nit',
+                'c.name as name_client',
+                'c.tel',
                 'f.tot',
                 'f.status',
+                'f.efecty',
+                'f.other',
                 'f.date_facture'
             )
             ->whereBetween('f.date_facture', [$date, $datetwo])
@@ -124,5 +127,20 @@ class FactureController extends Controller
             ->where('f.user_id', $user_id)
             ->get();
         return $gain;
+    }
+    public function type_sale($date, $datetwo)
+    {
+        $user_id = Auth::id();
+        $facture_tot = DB::table('factures')
+            ->select(
+                DB::raw('SUM(tot) as tot'),
+                DB::raw('SUM(efecty) as efecty'),
+                DB::raw('SUM(other) as other'),
+            )
+            ->whereBetween('date_facture', [$date, $datetwo])
+            ->where('status', 1)
+            ->where('user_id', $user_id)
+            ->get();
+        return $facture_tot;
     }
 }

@@ -16,7 +16,6 @@
         </div>
 
 
-        <a href="/google-auth/redirect">SSO GOOGLE</a>
 
       </div>
     </div>

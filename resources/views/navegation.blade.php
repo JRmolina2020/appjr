@@ -1,27 +1,40 @@
 <nav class="mt-2">
   <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" <li class="nav-item">
     <li>
-      <a href="{{ url('bills') }}" class="nav-link">
-        <i class="fi fi-credit-card"></i>
-        <p>Gastos</p>
+      <a href="{{ url('factures') }}" class="nav-link">
+        <i class="fi fi-dollar"></i>
+        <p>Venta</p>
       </a>
     </li>
     <li>
-      <a href="{{ url('investments') }}" class="nav-link">
-        <i class="fi fi-calculator"></i>
-        <p>Inversión</p>
-      </a>
-    </li>
+    <li>
     <li>
       <a href="{{ url('products') }}" class="nav-link">
         <i class="fi fi-ticket"></i>
         <p>Productos</p>
       </a>
     </li>
+    <a href="{{ url('investments') }}" class="nav-link">
+      <i class="fi fi-calculator"></i>
+      <p>Inversión</p>
+    </a>
+    </li>
+    <a href="{{ url('bills') }}" class="nav-link">
+      <i class="fi fi-credit-card"></i>
+      <p>Gastos</p>
+    </a>
+    </li>
     <li>
-      <a href="{{ url('factures') }}" class="nav-link">
-        <i class="fi fi-dollar"></i>
-        <p>Cotización</p>
+      <a href="{{ url('clients') }}" class="nav-link">
+        <i class="fi fi-ticket"></i>
+        <p>Clientes</p>
+      </a>
+    </li>
+    <li>
+
+      <a href="{{ url('products_locked') }}" class="nav-link">
+        <i class="fi fi-ticket"></i>
+        <p>P. descontinuados</p>
       </a>
     </li>
     <li class="nav-item">

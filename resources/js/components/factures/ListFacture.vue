@@ -8,13 +8,14 @@
                     :page-size="5"
                     :currentPage.sync="currentPage"
                     @totalPagesChanged="totalPages = $event"
-                    class="table"
+                    class="table table-striped table-dark table-hover"
                 >
                     <template #head>
                         <tr>
                             <th>Nit</th>
-                            <th>Nombre</th>
                             <th>Total</th>
+                            <th>Efectivo</th>
+                            <th>Tranfe</th>
                             <th>Fecha</th>
                             <th>Ver</th>
                             <th></th>
@@ -23,8 +24,12 @@
                     <template #body="{ rows }">
                         <tr v-for="row in rows" :key="row.id">
                             <td>{{ row.nit }}</td>
-                            <td>{{ row.name_client }}</td>
-                            <td>{{ row.tot | currency }}</td>
+                            <td>${{ row.tot | currency }}</td>
+                            <td>${{ row.efecty | currency }}</td>
+                            <td class="bg-warning" v-if="row.other > 0">
+                                ${{ row.other | currency }}
+                            </td>
+                            <td v-else>${{ row.other | currency }}</td>
                             <th>{{ row.date_facture }}</th>
                             <th>
                                 <data-example v-bind:item="row"></data-example>
@@ -50,9 +55,30 @@
                 </div>
             </div>
         </div>
-
+        <div class="alert alert-primary" role="alert">Revisa tus ventas</div>
+        <div class="row">
+            <div class="col-lg-4">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td>Monto</td>
+                            <td>Efectivo</td>
+                            <td>Tranfe</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr v-for="(item, index) in fact" :key="index">
+                            <th>{{ item.tot | currency }}</th>
+                            <th>{{ item.efecty | currency }}</th>
+                            <th>{{ item.other | currency }}</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
         <div class="row">
             <div class="col-12">
+                <p><strong>Filtra tus ventas por rango de fecha</strong></p>
                 <div class="input-group">
                     <input
                         class="form-control form-control-sm"
@@ -79,26 +105,28 @@
             </div>
         </div>
         <div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Cant</th>
-                        <th>Venta</th>
-                        <th>Costo</th>
-                        <th>Ganacia</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="item in facg" :key="item.id">
-                        <td scope="row">{{ item.name }}</td>
-                        <td>{{ item.quantity }}</td>
-                        <td>${{ item.tot | currency }}</td>
-                        <td>${{ item.cost | currency }}</td>
-                        <td>${{ item.gain | currency }}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cant</th>
+                            <th>Venta</th>
+                            <th>Costo</th>
+                            <th>Ganacia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item in facg" :key="item.id">
+                            <td scope="row">{{ item.name }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>${{ item.tot | currency }}</td>
+                            <td>${{ item.cost | currency }}</td>
+                            <td>${{ item.gain | currency }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </template>
@@ -123,7 +151,7 @@ export default {
         DataExample,
     },
     computed: {
-        ...mapState(["status", "urlfac", "fac", "facg"]),
+        ...mapState(["status", "urlfac", "fac", "fact", "facg"]),
     },
     created() {
         this.getList();
@@ -136,6 +164,7 @@ export default {
             };
             this.$store.dispatch("Facactions", obj);
             this.$store.dispatch("Facgactions", obj);
+            this.$store.dispatch("Factactions", obj);
         },
         getDate() {
             let obj = {
@@ -144,6 +173,7 @@ export default {
             };
             this.$store.dispatch("Facactions", obj);
             this.$store.dispatch("Facgactions", obj);
+            this.$store.dispatch("Factactions", obj);
         },
 
         async destroy(id) {

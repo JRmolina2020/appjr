@@ -78,6 +78,15 @@ Vue.component(
     "product_example",
     require("./components/products/ProductExample.vue").default
 );
+Vue.component(
+    "Product_locked",
+    require("./components/products/ProductLocked.vue").default
+);
+
+Vue.component(
+    "client_example",
+    require("./components/clients/ClientExample.vue").default
+);
 
 
 import auth from "./mixins/Auth.js";
