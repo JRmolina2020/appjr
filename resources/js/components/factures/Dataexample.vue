@@ -3,7 +3,7 @@
         <!-- Button trigger modal -->
         <button
             type="button"
-            class="btn btn-tool"
+            class="btn btn-tool clickable"
             data-toggle="modal"
             :data-target="'#modelId' + item.id"
             @click="getListd(item.id)"
@@ -143,3 +143,9 @@ export default {
     },
 };
 </script>
+
+<style>
+.clickable {
+    cursor: pointer;
+}
+</style>
