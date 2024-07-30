@@ -34,8 +34,8 @@
                         <td>{{ row.stock }}</td>
                         <td>${{ row.cost | currency }}</td>
 
-                        <td>${{ row.price | currency }}</td>
                         <td>${{ row.price_two | currency }}</td>
+                        <td>${{ row.price | currency }}</td>
                         <td>
                             <button
                                 type="button"

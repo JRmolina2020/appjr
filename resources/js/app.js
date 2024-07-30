@@ -32,6 +32,27 @@ import vSelect from "vue-select";
 Vue.component("v-select", vSelect);
 import "vue-select/dist/vue-select.css";
 //end
+//pdf
+const options = {
+    name: '_blank',
+    specs: [
+      'fullscreen=yes',
+      'titlebar=yes',
+      'scrollbars=yes'
+    ],
+    styles: [
+     'https://unpkg.com/bootstrap/dist/css/bootstrap.min.css'
+    ],
+    
+    "timeout": 1000,
+    "autoClose": true,
+    "windowTitle": "Gracias por tu compra"
+  }
+import VueHtmlToPaper from 'vue-html-to-paper';
+Vue.use(VueHtmlToPaper,options);
+
+//endpf
+
 
 Vue.directive("can", function (el, binding, vnode) {
     if (Permissions.indexOf(binding.value) !== -1) {

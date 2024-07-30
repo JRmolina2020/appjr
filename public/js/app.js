@@ -3070,33 +3070,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapState)(["status", "urlfacd", "facd"])),
@@ -3328,14 +3301,131 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      facid: 0,
+      totd: 0,
+      efectyd: 0,
+      otherd: 0,
+      tabletype: 1,
       totalPages: 1,
       currentPage: 1,
+      totalPages2: 1,
+      currentPage2: 1,
       filters: {
         name: {
           value: "",
@@ -3343,17 +3433,57 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       },
       date: "",
-      date2: ""
+      date2: "",
+      clientFac: []
     };
   },
   components: {
     DataExample: _Dataexample_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapState)(["status", "urlfac", "fac", "fact", "facg"])),
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapState)(["status", "urlfac", "fac", "facd", "fact", "facg"])), {}, {
+    sumProduct: function sumProduct() {
+      var tot = 0;
+      this.facd.map(function (data) {
+        tot = tot + data.cant;
+      });
+      return tot;
+    }
+  }),
   created: function created() {
     this.getList();
   },
   methods: {
+    print: function print() {
+      this.$htmlToPaper("facturepdf");
+    },
+    typelist: function typelist(row) {
+      this.facid = row.id;
+      this.totd = row.tot;
+      this.efectyd = row.efecty;
+      this.otherd = row.other;
+      this.tabletype = 0;
+      this.clientFac.push({
+        name_client: row.name_client,
+        nit: row.nit,
+        tel: row.tel,
+        efecty: row.efecty,
+        other: row.other,
+        date_facture: row.date_facture,
+        tot: row.tot
+      });
+      this.getlistDetail(row.id);
+    },
+    getlistDetail: function getlistDetail(id) {
+      var obj = {
+        prop1: id
+      };
+      this.$store.dispatch("Facdactions", obj);
+    },
+    typelist2: function typelist2() {
+      this.tabletype = 1;
+      this.clientFac = [];
+      console.log(this.clientFac);
+    },
     getList: function getList() {
       var obj = {
         prop1: _mixins_date__WEBPACK_IMPORTED_MODULE_0__["default"],
@@ -6852,8 +6982,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.js");
 /* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_9__);
 /* harmony import */ var vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! vue-select/dist/vue-select.css */ "./node_modules/vue-select/dist/vue-select.css");
-/* harmony import */ var _mixins_Auth_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./mixins/Auth.js */ "./resources/js/mixins/Auth.js");
-/* harmony import */ var _mixins_Auth_js__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_mixins_Auth_js__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var vue_html_to_paper__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! vue-html-to-paper */ "./node_modules/vue-html-to-paper/dist/index.js");
+/* harmony import */ var _mixins_Auth_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./mixins/Auth.js */ "./resources/js/mixins/Auth.js");
+/* harmony import */ var _mixins_Auth_js__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_mixins_Auth_js__WEBPACK_IMPORTED_MODULE_12__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = (__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js")["default"]);
@@ -6887,6 +7018,18 @@ vee_validate__WEBPACK_IMPORTED_MODULE_8__.Validator.localize("es", (vee_validate
 
 Vue.component("v-select", (vue_select__WEBPACK_IMPORTED_MODULE_9___default()));
  //end
+//pdf
+
+var options = {
+  name: '_blank',
+  specs: ['fullscreen=yes', 'titlebar=yes', 'scrollbars=yes'],
+  styles: ['https://unpkg.com/bootstrap/dist/css/bootstrap.min.css'],
+  "timeout": 1000,
+  "autoClose": true,
+  "windowTitle": "Gracias por tu compra"
+};
+
+Vue.use(vue_html_to_paper__WEBPACK_IMPORTED_MODULE_11__["default"], options); //endpf
 
 Vue.directive("can", function (el, binding, vnode) {
   if (Permissions.indexOf(binding.value) !== -1) {
@@ -6911,7 +7054,7 @@ Vue.component("product_example", (__webpack_require__(/*! ./components/products/
 Vue.component("Product_locked", (__webpack_require__(/*! ./components/products/ProductLocked.vue */ "./resources/js/components/products/ProductLocked.vue")["default"]));
 Vue.component("client_example", (__webpack_require__(/*! ./components/clients/ClientExample.vue */ "./resources/js/components/clients/ClientExample.vue")["default"]));
 
-Vue.mixin((_mixins_Auth_js__WEBPACK_IMPORTED_MODULE_11___default()));
+Vue.mixin((_mixins_Auth_js__WEBPACK_IMPORTED_MODULE_12___default()));
 var app = new Vue({
   el: "#app",
   store: _store__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -78319,6 +78462,110 @@ var version = vue__WEBPACK_IMPORTED_MODULE_0__["default"].version
 
 /***/ }),
 
+/***/ "./node_modules/vue-html-to-paper/dist/index.js":
+/*!******************************************************!*\
+  !*** ./node_modules/vue-html-to-paper/dist/index.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+
+function addStyles (win, styles) {
+  styles.forEach(style => {
+    let link = win.document.createElement('link');
+    link.setAttribute('rel', 'stylesheet');
+    link.setAttribute('type', 'text/css');
+    link.setAttribute('href', style);
+    win.document.getElementsByTagName('head')[0].appendChild(link);
+  });
+}
+
+function openWindow (url, name, props) {
+  let windowRef = null;
+  windowRef = window.open(url, name, props);
+  if (!windowRef.opener) {
+    windowRef.opener = self;
+  }
+  windowRef.focus();
+  return windowRef;
+}
+  
+const VueHtmlToPaper = {
+  install (Vue, options = {}) {
+    Vue.prototype.$htmlToPaper = (el, localOptions, cb = () => true) => {
+      let defaultName = '_blank', 
+        defaultSpecs = ['fullscreen=yes','titlebar=yes', 'scrollbars=yes'],
+        defaultReplace = true,
+        defaultStyles = [],
+        defaultWindowTitle = window.document.title;
+      let {
+        name = defaultName,
+        specs = defaultSpecs,
+        replace = defaultReplace,
+        styles = defaultStyles,
+        autoClose = true,
+        windowTitle = defaultWindowTitle,
+      } = options;
+
+      // If has localOptions
+      // TODO: improve logic
+      if (!!localOptions) {
+        if (localOptions.name) name = localOptions.name;
+        if (localOptions.specs) specs = localOptions.specs;
+        if (localOptions.replace) replace = localOptions.replace;
+        if (localOptions.styles) styles = localOptions.styles;
+        if (localOptions.autoClose === false) autoClose = localOptions.autoClose;
+        if (localOptions.windowTitle) windowTitle = localOptions.windowTitle;
+      }
+
+      specs = !!specs.length ? specs.join(',') : '';
+
+      const element = window.document.getElementById(el);
+
+      if (!element) {
+        alert(`Element to print #${el} not found!`);
+        return;
+      }
+      
+      const url = '';
+      const win = openWindow(url, name, specs);
+
+      win.document.write(`
+        <html>
+          <head>
+            <title>${windowTitle || window.document.title}</title>
+          </head>
+          <body>
+            ${element.innerHTML}
+          </body>
+        </html>
+      `);
+
+      addStyles(win, styles);
+      
+      setTimeout(() => {
+        win.focus();
+        win.print();
+        console.warn('autoClose', autoClose);
+        if (autoClose) {
+          setTimeout(function () {win.close();}, 1);
+        }
+        cb();
+      }, 1000);
+        
+      return true;
+    };
+  },
+};
+
+exports["default"] = VueHtmlToPaper;
+
+
+/***/ }),
+
 /***/ "./resources/js/components/bills/BillExample.vue":
 /*!*******************************************************!*\
   !*** ./resources/js/components/bills/BillExample.vue ***!
@@ -81445,238 +81692,182 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c(
-      "button",
-      {
-        staticClass: "btn btn-tool clickable",
-        attrs: {
-          type: "button",
-          "data-toggle": "modal",
-          "data-target": "#modelId" + _vm.item.id,
-        },
+    _c("p", [
+      _vm._v("\n        #Cotización "),
+      _c("strong", [_vm._v(_vm._s(_vm.item.id))]),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group" }, [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.filters.name.value,
+            expression: "filters.name.value",
+          },
+        ],
+        staticClass: "form-control",
+        attrs: { type: "text", placeholder: "Buscar producto" },
+        domProps: { value: _vm.filters.name.value },
         on: {
-          click: function ($event) {
-            return _vm.getListd(_vm.item.id)
+          input: function ($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.filters.name, "value", $event.target.value)
           },
         },
-      },
-      [_c("i", { staticClass: "fi fi-calculator" })]
-    ),
+      }),
+    ]),
     _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        attrs: {
-          id: "modelId" + _vm.item.id,
-          tabindex: "-1",
-          role: "dialog",
-          "aria-labelledby": "modelTitleId",
-          "aria-hidden": "true",
-        },
-      },
-      [
-        _c(
-          "div",
-          { staticClass: "modal-dialog", attrs: { role: "document" } },
-          [
-            _c("div", { staticClass: "modal-content" }, [
-              _c("div", { staticClass: "modal-body" }, [
-                _c("p", [
-                  _vm._v("\n                        #Cotización "),
-                  _c("strong", [_vm._v(_vm._s(_vm.item.id))]),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-group" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.filters.name.value,
-                        expression: "filters.name.value",
-                      },
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text", placeholder: "Buscar producto" },
-                    domProps: { value: _vm.filters.name.value },
-                    on: {
-                      input: function ($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.filters.name, "value", $event.target.value)
-                      },
-                    },
-                  }),
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "table", staticStyle: { overflow: "auto" } },
-                  [
-                    _c("table", { staticClass: "table" }, [
-                      _vm._m(0),
+    _c("div", { staticClass: "table", staticStyle: { overflow: "auto" } }, [
+      _c("table", { staticClass: "table" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("tbody", [
+          _c("tr", [
+            _c("td", { staticStyle: { color: "black" } }, [
+              _vm._v(
+                "\n                        " +
+                  _vm._s(_vm.item.nit) +
+                  "\n                    "
+              ),
+            ]),
+            _vm._v(" "),
+            _c("td", { staticStyle: { color: "black" } }, [
+              _vm._v(
+                "\n                        " +
+                  _vm._s(_vm.item.name_client) +
+                  "\n                    "
+              ),
+            ]),
+            _vm._v(" "),
+            _c("td", { staticStyle: { color: "black" } }, [
+              _vm._v(
+                "\n                        " +
+                  _vm._s(_vm.item.tel) +
+                  "\n                    "
+              ),
+            ]),
+            _vm._v(" "),
+            _c("td", { staticStyle: { color: "black" } }, [
+              _vm._v(
+                "\n                        " +
+                  _vm._s(_vm.item.date_facture) +
+                  "\n                    "
+              ),
+            ]),
+          ]),
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("div", [
+      _c(
+        "div",
+        { staticClass: "table-responsive" },
+        [
+          _c("VTable", {
+            staticClass: "table table-striped",
+            attrs: {
+              data: _vm.facd,
+              filters: _vm.filters,
+              "page-size": 5,
+              currentPage: _vm.currentPage,
+            },
+            on: {
+              "update:currentPage": function ($event) {
+                _vm.currentPage = $event
+              },
+              "update:current-page": function ($event) {
+                _vm.currentPage = $event
+              },
+              totalPagesChanged: function ($event) {
+                _vm.totalPages = $event
+              },
+            },
+            scopedSlots: _vm._u([
+              {
+                key: "head",
+                fn: function () {
+                  return [
+                    _c("tr", { staticStyle: { color: "black" } }, [
+                      _c("th", [_vm._v("Produto")]),
                       _vm._v(" "),
-                      _c("tbody", [
-                        _c("tr", [
-                          _c("td", { staticStyle: { color: "black" } }, [
-                            _vm._v(
-                              "\n                                        " +
-                                _vm._s(_vm.item.nit) +
-                                "\n                                    "
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { staticStyle: { color: "black" } }, [
-                            _vm._v(
-                              "\n                                        " +
-                                _vm._s(_vm.item.name_client) +
-                                "\n                                    "
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { staticStyle: { color: "black" } }, [
-                            _vm._v(
-                              "\n                                        " +
-                                _vm._s(_vm.item.tel) +
-                                "\n                                    "
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { staticStyle: { color: "black" } }, [
-                            _vm._v(
-                              "\n                                        " +
-                                _vm._s(_vm.item.date_facture) +
-                                "\n                                    "
-                            ),
-                          ]),
-                        ]),
-                      ]),
+                      _c("th", [_vm._v("Precio")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("Cant")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("sub")]),
                     ]),
                   ]
-                ),
-                _vm._v(" "),
-                _c("div", [
-                  _c(
-                    "div",
-                    { staticClass: "table-responsive" },
-                    [
-                      _c("VTable", {
-                        staticClass: "table table-striped",
-                        attrs: {
-                          data: _vm.facd,
-                          filters: _vm.filters,
-                          "page-size": 5,
-                          currentPage: _vm.currentPage,
-                        },
-                        on: {
-                          "update:currentPage": function ($event) {
-                            _vm.currentPage = $event
-                          },
-                          "update:current-page": function ($event) {
-                            _vm.currentPage = $event
-                          },
-                          totalPagesChanged: function ($event) {
-                            _vm.totalPages = $event
-                          },
-                        },
-                        scopedSlots: _vm._u([
-                          {
-                            key: "head",
-                            fn: function () {
-                              return [
-                                _c("tr", { staticStyle: { color: "black" } }, [
-                                  _c("th", [_vm._v("Produto")]),
-                                  _vm._v(" "),
-                                  _c("th", [_vm._v("Precio")]),
-                                  _vm._v(" "),
-                                  _c("th", [_vm._v("Cant")]),
-                                  _vm._v(" "),
-                                  _c("th", [_vm._v("sub")]),
-                                ]),
-                              ]
-                            },
-                            proxy: true,
-                          },
-                          {
-                            key: "body",
-                            fn: function (ref) {
-                              var rows = ref.rows
-                              return _vm._l(rows, function (row) {
-                                return _c(
-                                  "tr",
-                                  {
-                                    key: row.id,
-                                    staticStyle: { color: "black" },
-                                  },
-                                  [
-                                    _c("th", { attrs: { scope: "row" } }, [
-                                      _vm._v(
-                                        "\n                                            " +
-                                          _vm._s(row.name_product) +
-                                          "\n                                        "
-                                      ),
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("td", [
-                                      _vm._v(
-                                        _vm._s(_vm._f("currency")(row.price))
-                                      ),
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("td", [_vm._v(_vm._s(row.cant))]),
-                                    _vm._v(" "),
-                                    _c("td", [
-                                      _vm._v(
-                                        _vm._s(_vm._f("currency")(row.sub))
-                                      ),
-                                    ]),
-                                  ]
-                                )
-                              })
-                            },
-                          },
+                },
+                proxy: true,
+              },
+              {
+                key: "body",
+                fn: function (ref) {
+                  var rows = ref.rows
+                  return _vm._l(rows, function (row) {
+                    return _c(
+                      "tr",
+                      { key: row.id, staticStyle: { color: "black" } },
+                      [
+                        _c("th", { attrs: { scope: "row" } }, [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(row.name_product) +
+                              "\n                        "
+                          ),
                         ]),
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "text-xs-center" },
-                        [
-                          _c("VTPagination", {
-                            attrs: {
-                              currentPage: _vm.currentPage,
-                              "total-pages": _vm.totalPages,
-                              "boundary-links": true,
-                            },
-                            on: {
-                              "update:currentPage": function ($event) {
-                                _vm.currentPage = $event
-                              },
-                              "update:current-page": function ($event) {
-                                _vm.currentPage = $event
-                              },
-                            },
-                          }),
-                        ],
-                        1
-                      ),
-                    ],
-                    1
-                  ),
-                  _vm._v(
-                    "\n                        TOTAL $" +
-                      _vm._s(_vm._f("currency")(_vm.item.tot)) +
-                      "\n                    "
-                  ),
-                ]),
-              ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(_vm._s(_vm._f("currency")(row.price))),
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(row.cant))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(_vm._f("currency")(row.sub)))]),
+                      ]
+                    )
+                  })
+                },
+              },
             ]),
-          ]
-        ),
-      ]
-    ),
+          }),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "text-xs-center" },
+            [
+              _c("VTPagination", {
+                attrs: {
+                  currentPage: _vm.currentPage,
+                  "total-pages": _vm.totalPages,
+                  "boundary-links": true,
+                },
+                on: {
+                  "update:currentPage": function ($event) {
+                    _vm.currentPage = $event
+                  },
+                  "update:current-page": function ($event) {
+                    _vm.currentPage = $event
+                  },
+                },
+              }),
+            ],
+            1
+          ),
+        ],
+        1
+      ),
+      _vm._v(
+        "\n        TOTAL $" +
+          _vm._s(_vm._f("currency")(_vm.item.tot)) +
+          "\n    "
+      ),
+    ]),
   ])
 }
 var staticRenderFns = [
@@ -81756,121 +81947,19 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "card-body" }, [
-      _c(
-        "div",
-        { staticClass: "table-responsive" },
-        [
-          _c("VTable", {
-            staticClass: "table table-striped table-dark table-hover",
-            attrs: {
-              data: _vm.fac,
-              filters: _vm.filters,
-              "page-size": 5,
-              currentPage: _vm.currentPage,
-            },
-            on: {
-              "update:currentPage": function ($event) {
-                _vm.currentPage = $event
-              },
-              "update:current-page": function ($event) {
-                _vm.currentPage = $event
-              },
-              totalPagesChanged: function ($event) {
-                _vm.totalPages = $event
-              },
-            },
-            scopedSlots: _vm._u([
-              {
-                key: "head",
-                fn: function () {
-                  return [
-                    _c("tr", [
-                      _c("th", [_vm._v("Nit")]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Total")]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Efectivo")]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Tranfe")]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Fecha")]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Ver")]),
-                      _vm._v(" "),
-                      _c("th"),
-                    ]),
-                  ]
-                },
-                proxy: true,
-              },
-              {
-                key: "body",
-                fn: function (ref) {
-                  var rows = ref.rows
-                  return _vm._l(rows, function (row) {
-                    return _c("tr", { key: row.id }, [
-                      _c("td", [_vm._v(_vm._s(row.nit))]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _vm._v("$" + _vm._s(_vm._f("currency")(row.tot))),
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _vm._v("$" + _vm._s(_vm._f("currency")(row.efecty))),
-                      ]),
-                      _vm._v(" "),
-                      row.other > 0
-                        ? _c("td", { staticClass: "bg-warning" }, [
-                            _vm._v(
-                              "\n                            $" +
-                                _vm._s(_vm._f("currency")(row.other)) +
-                                "\n                        "
-                            ),
-                          ])
-                        : _c("td", [
-                            _vm._v("$" + _vm._s(_vm._f("currency")(row.other))),
-                          ]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v(_vm._s(row.date_facture))]),
-                      _vm._v(" "),
-                      _c(
-                        "th",
-                        [_c("data-example", { attrs: { item: row } })],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c("th", [
-                        _c(
-                          "a",
-                          {
-                            staticClass: "btn btn-tool",
-                            attrs: { href: "#" },
-                            on: {
-                              click: function ($event) {
-                                return _vm.destroy(row.id)
-                              },
-                            },
-                          },
-                          [_c("i", { staticClass: "fi fi-trash" })]
-                        ),
-                      ]),
-                    ])
-                  })
-                },
-              },
-            ]),
-          }),
-          _vm._v(" "),
+    _vm.tabletype
+      ? _c("div", { staticClass: "card-body" }, [
           _c(
             "div",
-            { staticClass: "text-xs-center" },
+            { staticClass: "table-responsive" },
             [
-              _c("VTPagination", {
+              _c("VTable", {
+                staticClass: "table table-striped table-dark table-hover",
                 attrs: {
+                  data: _vm.fac,
+                  filters: _vm.filters,
+                  "page-size": 5,
                   currentPage: _vm.currentPage,
-                  "total-pages": _vm.totalPages,
-                  "boundary-links": true,
                 },
                 on: {
                   "update:currentPage": function ($event) {
@@ -81879,26 +81968,319 @@ var render = function () {
                   "update:current-page": function ($event) {
                     _vm.currentPage = $event
                   },
+                  totalPagesChanged: function ($event) {
+                    _vm.totalPages = $event
+                  },
                 },
+                scopedSlots: _vm._u(
+                  [
+                    {
+                      key: "head",
+                      fn: function () {
+                        return [
+                          _c("tr", [
+                            _c("th", [_vm._v("Nit")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Total")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Efectivo")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Tranfe")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Fecha")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Ver")]),
+                            _vm._v(" "),
+                            _c("th"),
+                          ]),
+                        ]
+                      },
+                      proxy: true,
+                    },
+                    {
+                      key: "body",
+                      fn: function (ref) {
+                        var rows = ref.rows
+                        return _vm._l(rows, function (row) {
+                          return _c("tr", { key: row.id }, [
+                            _c("td", [_vm._v(_vm._s(row.nit))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v("$" + _vm._s(_vm._f("currency")(row.tot))),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                "$" + _vm._s(_vm._f("currency")(row.efecty))
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            row.other > 0
+                              ? _c("td", { staticClass: "bg-warning" }, [
+                                  _vm._v(
+                                    "\n                            $" +
+                                      _vm._s(_vm._f("currency")(row.other)) +
+                                      "\n                        "
+                                  ),
+                                ])
+                              : _c("td", [
+                                  _vm._v(
+                                    "$" + _vm._s(_vm._f("currency")(row.other))
+                                  ),
+                                ]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v(_vm._s(row.date_facture))]),
+                            _vm._v(" "),
+                            _c("th", [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-tool clickable",
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.typelist(row)
+                                    },
+                                  },
+                                },
+                                [_c("i", { staticClass: "fi fi-calculator" })]
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("th", [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "btn btn-tool",
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.destroy(row.id)
+                                    },
+                                  },
+                                },
+                                [_c("i", { staticClass: "fi fi-trash" })]
+                              ),
+                            ]),
+                          ])
+                        })
+                      },
+                    },
+                  ],
+                  null,
+                  false,
+                  1801757218
+                ),
               }),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "text-xs-center" },
+                [
+                  _c("VTPagination", {
+                    attrs: {
+                      currentPage: _vm.currentPage,
+                      "total-pages": _vm.totalPages,
+                      "boundary-links": true,
+                    },
+                    on: {
+                      "update:currentPage": function ($event) {
+                        _vm.currentPage = $event
+                      },
+                      "update:current-page": function ($event) {
+                        _vm.currentPage = $event
+                      },
+                    },
+                  }),
+                ],
+                1
+              ),
             ],
             1
           ),
-        ],
-        1
-      ),
-    ]),
+        ])
+      : _c("div", [
+          _c(
+            "div",
+            { staticClass: "alert alert-primary", attrs: { role: "alert" } },
+            [_vm._v("Detalle de venta")]
+          ),
+          _vm._v(" "),
+          _c("div", { attrs: { id: "facturepdf" } }, [
+            _c("div", { staticClass: "table-responsive" }, [
+              _c("p", [_c("strong", [_vm._v("VENTA #" + _vm._s(_vm.facid))])]),
+              _vm._v(" "),
+              _c("table", { staticClass: "table table-dark" }, [
+                _vm._m(0),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.clientFac, function (cli) {
+                    return _c("tr", { key: cli.id }, [
+                      _c("td", [
+                        _vm._v(
+                          "\n                                " +
+                            _vm._s(cli.nit) +
+                            "\n                            "
+                        ),
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v(
+                          "\n                                " +
+                            _vm._s(cli.name_client) +
+                            "\n                            "
+                        ),
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v(
+                          "\n                                " +
+                            _vm._s(cli.tel) +
+                            "\n                            "
+                        ),
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v(
+                          "\n                                " +
+                            _vm._s(cli.date_facture) +
+                            "\n                            "
+                        ),
+                      ]),
+                    ])
+                  }),
+                  0
+                ),
+              ]),
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "table-responsive" },
+              [
+                _c("VTable", {
+                  staticClass: "table table-striped",
+                  attrs: { data: _vm.facd },
+                  scopedSlots: _vm._u([
+                    {
+                      key: "head",
+                      fn: function () {
+                        return [
+                          _c("tr", [
+                            _c("th", [_vm._v("Produto")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Precio")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Cant")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("sub")]),
+                          ]),
+                        ]
+                      },
+                      proxy: true,
+                    },
+                    {
+                      key: "body",
+                      fn: function (ref) {
+                        var rows = ref.rows
+                        return _vm._l(rows, function (row) {
+                          return _c("tr", { key: row.id }, [
+                            _c("th", { attrs: { scope: "row" } }, [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(row.name_product) +
+                                  "\n                            "
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                "$" + _vm._s(_vm._f("currency")(row.price))
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(row.cant))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v("$" + _vm._s(_vm._f("currency")(row.sub))),
+                            ]),
+                          ])
+                        })
+                      },
+                    },
+                  ]),
+                }),
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-lg-4" }, [
+                _c("table", { staticClass: "table table-bordered" }, [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c("tfoot", [
+                    _c("tr", [
+                      _c("th", [_vm._v(_vm._s(_vm._f("currency")(this.totd)))]),
+                      _vm._v(" "),
+                      _c("th", [
+                        _vm._v(_vm._s(_vm._f("currency")(this.efectyd))),
+                      ]),
+                      _vm._v(" "),
+                      _c("th", [
+                        _vm._v(_vm._s(_vm._f("currency")(this.otherd))),
+                      ]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v(_vm._s(_vm.sumProduct))]),
+                    ]),
+                  ]),
+                ]),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-tool clickable",
+                attrs: { type: "button" },
+                on: {
+                  click: function ($event) {
+                    return _vm.typelist2()
+                  },
+                },
+              },
+              [_c("i", { staticClass: "fi fi-close-a" })]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-tool clickable",
+                attrs: { type: "button" },
+                on: {
+                  click: function ($event) {
+                    return _vm.print()
+                  },
+                },
+              },
+              [_c("i", { staticClass: "fi fi-print" })]
+            ),
+          ]),
+        ]),
     _vm._v(" "),
     _c(
       "div",
-      { staticClass: "alert alert-primary", attrs: { role: "alert" } },
-      [_vm._v("Revisa tus ventas")]
+      { staticClass: "alert alert-primary mt-3", attrs: { role: "alert" } },
+      [_vm._v("\n        Revisa tus ventas\n    ")]
     ),
     _vm._v(" "),
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-lg-4" }, [
-        _c("table", { staticClass: "table table-bordered" }, [
-          _vm._m(0),
+        _c("table", { staticClass: "table table-bordered table-dark" }, [
+          _vm._m(2),
           _vm._v(" "),
           _c(
             "tfoot",
@@ -81919,7 +82301,7 @@ var render = function () {
     _vm._v(" "),
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-12" }, [
-        _vm._m(1),
+        _vm._m(3),
         _vm._v(" "),
         _c("div", { staticClass: "input-group" }, [
           _c("input", {
@@ -81988,7 +82370,7 @@ var render = function () {
     _c("div", [
       _c("div", { staticClass: "table-responsive" }, [
         _c("table", { staticClass: "table" }, [
-          _vm._m(2),
+          _vm._m(4),
           _vm._v(" "),
           _c(
             "tbody",
@@ -82015,6 +82397,38 @@ var render = function () {
   ])
 }
 var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Nit.")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Cliente")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Tel")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Fecha")]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tbody", [
+      _c("tr", [
+        _c("td", [_vm._v("Total")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("Efectivo")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("Tranfe")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("Cant.")]),
+      ]),
+    ])
+  },
   function () {
     var _vm = this
     var _h = _vm.$createElement
@@ -83867,11 +84281,11 @@ var render = function () {
                     ]),
                     _vm._v(" "),
                     _c("td", [
-                      _vm._v("$" + _vm._s(_vm._f("currency")(row.price))),
+                      _vm._v("$" + _vm._s(_vm._f("currency")(row.price_two))),
                     ]),
                     _vm._v(" "),
                     _c("td", [
-                      _vm._v("$" + _vm._s(_vm._f("currency")(row.price_two))),
+                      _vm._v("$" + _vm._s(_vm._f("currency")(row.price))),
                     ]),
                     _vm._v(" "),
                     _c("td", [

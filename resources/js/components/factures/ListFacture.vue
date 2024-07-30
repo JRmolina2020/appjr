@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="card-body">
+        <div class="card-body" v-if="tabletype">
             <div class="table-responsive">
                 <VTable
                     :data="fac"
@@ -32,7 +32,13 @@
                             <td v-else>${{ row.other | currency }}</td>
                             <th>{{ row.date_facture }}</th>
                             <th>
-                                <data-example v-bind:item="row"></data-example>
+                                <button
+                                    type="button"
+                                    @click="typelist(row)"
+                                    class="btn btn-tool clickable"
+                                >
+                                    <i class="fi fi-calculator"></i>
+                                </button>
                             </th>
                             <th>
                                 <a
@@ -55,10 +61,114 @@
                 </div>
             </div>
         </div>
-        <div class="alert alert-primary" role="alert">Revisa tus ventas</div>
+        <!-- tabla detalle -->
+        <div v-else>
+            <div class="alert alert-primary" role="alert">Detalle de venta</div>
+            <div id="facturepdf">
+                <div class="table-responsive">
+                    <p>
+                        <strong>VENTA #{{ facid }}</strong>
+                    </p>
+                    <table class="table table-dark">
+                        <thead>
+                            <tr>
+                                <th>Nit.</th>
+                                <th>Cliente</th>
+                                <th>Tel</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="cli in clientFac" :key="cli.id">
+                                <td>
+                                    {{ cli.nit }}
+                                </td>
+                                <td>
+                                    {{ cli.name_client }}
+                                </td>
+                                <td>
+                                    {{ cli.tel }}
+                                </td>
+                                <td>
+                                    {{ cli.date_facture }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- table detail -->
+                <div class="table-responsive">
+                    <VTable :data="facd" class="table table-striped">
+                        <template #head>
+                            <tr>
+                                <th>Produto</th>
+                                <th>Precio</th>
+                                <th>Cant</th>
+                                <th>sub</th>
+                            </tr>
+                        </template>
+                        <template #body="{ rows }">
+                            <tr v-for="row in rows" :key="row.id">
+                                <th scope="row">
+                                    {{ row.name_product }}
+                                </th>
+                                <td>${{ row.price | currency }}</td>
+                                <td>{{ row.cant }}</td>
+                                <td>${{ row.sub | currency }}</td>
+                            </tr>
+                        </template>
+                    </VTable>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>Total</td>
+                                    <td>Efectivo</td>
+                                    <td>Tranfe</td>
+                                    <td>Cant.</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>{{ this.totd | currency }}</th>
+                                    <th>{{ this.efectyd | currency }}</th>
+                                    <th>{{ this.otherd | currency }}</th>
+                                    <th>{{ sumProduct }}</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- end -->
+            <div class="row">
+                <button
+                    type="button"
+                    @click="typelist2()"
+                    class="btn btn-tool clickable"
+                >
+                    <i class="fi fi-close-a"></i>
+                </button>
+
+                <button
+                    type="button"
+                    @click="print()"
+                    class="btn btn-tool clickable"
+                >
+                    <i class="fi fi-print"></i>
+                </button>
+            </div>
+        </div>
+        <!-- end -->
+        <div class="alert alert-primary mt-3" role="alert">
+            Revisa tus ventas
+        </div>
         <div class="row">
             <div class="col-lg-4">
-                <table class="table table-bordered">
+                <table class="table table-bordered table-dark">
                     <tbody>
                         <tr>
                             <td>Monto</td>
@@ -138,25 +248,72 @@ import DataExample from "./Dataexample.vue";
 export default {
     data() {
         return {
+            facid: 0,
+            totd: 0,
+            efectyd: 0,
+            otherd: 0,
+            tabletype: 1,
             totalPages: 1,
             currentPage: 1,
+            totalPages2: 1,
+            currentPage2: 1,
             filters: {
                 name: { value: "", keys: ["name"] },
             },
             date: "",
             date2: "",
+            clientFac: [],
         };
     },
     components: {
         DataExample,
     },
     computed: {
-        ...mapState(["status", "urlfac", "fac", "fact", "facg"]),
+        ...mapState(["status", "urlfac", "fac", "facd", "fact", "facg"]),
+        sumProduct() {
+            let tot = 0;
+            this.facd.map((data) => {
+                tot = tot + data.cant;
+            });
+            return tot;
+        },
     },
     created() {
         this.getList();
     },
     methods: {
+        print() {
+            this.$htmlToPaper("facturepdf");
+        },
+        typelist(row) {
+            this.facid = row.id;
+            this.totd = row.tot;
+            this.efectyd = row.efecty;
+            this.otherd = row.other;
+
+            this.tabletype = 0;
+            this.clientFac.push({
+                name_client: row.name_client,
+                nit: row.nit,
+                tel: row.tel,
+                efecty: row.efecty,
+                other: row.other,
+                date_facture: row.date_facture,
+                tot: row.tot,
+            });
+            this.getlistDetail(row.id);
+        },
+        getlistDetail(id) {
+            let obj = {
+                prop1: id,
+            };
+            this.$store.dispatch("Facdactions", obj);
+        },
+        typelist2() {
+            this.tabletype = 1;
+            this.clientFac = [];
+            console.log(this.clientFac);
+        },
         getList() {
             let obj = {
                 prop1: date_now,
