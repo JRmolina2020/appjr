@@ -34,7 +34,7 @@
                                 placeholder="Buscar producto"
                             />
                         </div>
-                        <div class="table-responsive">
+                        <div class="table" style="overflow: auto">
                             <table class="table">
                                 <thead>
                                     <tr>
