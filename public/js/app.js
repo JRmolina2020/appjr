@@ -4743,7 +4743,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$validator.validate().then(function (valid) {
         if (valid) {
           axios.post(_this.url, _this.form).then(function (response) {
-            window.location.replace("/bills");
+            window.location.replace("/factures");
             _this.status = false;
           })["catch"](function (error) {
             _this.form.password = null;
@@ -5857,10 +5857,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
+                _this2.form.email = _this2.form.email.toLowerCase();
+                _context.next = 3;
                 return axios.post("users", _this2.form);
 
-              case 2:
+              case 3:
                 response = _context.sent;
 
                 try {
@@ -5877,7 +5878,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                   console.log(error.response);
                 }
 
-              case 4:
+              case 5:
               case "end":
                 return _context.stop();
             }
@@ -5887,7 +5888,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     login: function login() {
       axios.post("login", this.form).then(function (response) {
-        window.location.replace("/bills");
+        window.location.replace("/factures");
       });
     },
     clear: function clear() {
@@ -5896,6 +5897,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.form.password = null;
       this.$validator.reset();
       this.send = true;
+    },
+    minuscula: function minuscula(e) {
+      e.value = e.value.toUpperCase();
     }
   }
 });
@@ -83663,9 +83667,13 @@ var render = function () {
           ],
           staticClass: "form-control",
           class: {
-            "is-invalid": _vm.submitted && _vm.errors.has("email"),
+            "is-invalid": _vm.submitted && _vm.errors.has("negocio"),
           },
-          attrs: { type: "email", placeholder: "Correo", name: "email" },
+          attrs: {
+            type: "text",
+            placeholder: "Nombre de tu negocio",
+            name: "negocio",
+          },
           domProps: { value: _vm.form.email },
           on: {
             input: function ($event) {
@@ -83677,11 +83685,11 @@ var render = function () {
           },
         }),
         _vm._v(" "),
-        _vm.submitted && _vm.errors.has("email")
+        _vm.submitted && _vm.errors.has("negocio")
           ? _c("div", { staticClass: "invalid-feedback" }, [
               _vm._v(
                 "\n            " +
-                  _vm._s(_vm.errors.first("email")) +
+                  _vm._s(_vm.errors.first("negocio")) +
                   "\n        "
               ),
             ])

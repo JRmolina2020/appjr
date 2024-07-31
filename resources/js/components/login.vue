@@ -2,21 +2,21 @@
     <form method="POST" @submit.prevent="login" autocomplete="off">
         <div class="form-group">
             <input
-                type="email"
+                type="text"
                 v-validate="'required|max:40|min:4'"
                 class="form-control"
                 :class="{
-                    'is-invalid': submitted && errors.has('email'),
+                    'is-invalid': submitted && errors.has('negocio'),
                 }"
-                placeholder="Correo"
+                placeholder="Nombre de tu negocio"
                 v-model="form.email"
-                name="email"
+                name="negocio"
             />
             <div
-                v-if="submitted && errors.has('email')"
+                v-if="submitted && errors.has('negocio')"
                 class="invalid-feedback"
             >
-                {{ errors.first("email") }}
+                {{ errors.first("negocio") }}
             </div>
         </div>
         <div class="form-group">
@@ -83,7 +83,7 @@ export default {
                     axios
                         .post(this.url, this.form)
                         .then((response) => {
-                            window.location.replace("/bills");
+                            window.location.replace("/factures");
                             this.status = false;
                         })
                         .catch((error) => {

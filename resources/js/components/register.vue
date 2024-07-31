@@ -114,6 +114,7 @@ export default {
             });
         },
         async route() {
+            this.form.email = this.form.email.toLowerCase();
             let response = await axios.post("users", this.form);
 
             try {
@@ -132,7 +133,7 @@ export default {
         },
         login() {
             axios.post("login", this.form).then((response) => {
-                window.location.replace("/bills");
+                window.location.replace("/factures");
             });
         },
         clear() {
@@ -141,6 +142,9 @@ export default {
             this.form.password = null;
             this.$validator.reset();
             this.send = true;
+        },
+        minuscula(e) {
+            e.value = e.value.toUpperCase();
         },
     },
 };

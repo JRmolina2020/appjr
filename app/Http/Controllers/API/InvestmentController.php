@@ -42,7 +42,7 @@ class InvestmentController extends Controller
         $income->save();
         $id = $income->id;
         $this->update_stock($id, 'add');
-        return response()->json(['message' => 'Inversióm registrada'], 200);
+        return response()->json(['message' => 'Inversión registrada'], 200);
     }
     public function update_stock($id, $type)
     {
