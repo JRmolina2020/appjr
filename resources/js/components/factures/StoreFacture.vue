@@ -78,7 +78,7 @@
                             <div
                                 v-for="(item, index) in filteredList"
                                 :key="'t' + index"
-                                class="col-3"
+                                class="col-4"
                             >
                                 <div
                                     v-if="item.stock > 0"

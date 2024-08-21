@@ -82813,7 +82813,7 @@ var render = function () {
                         _vm._l(_vm.filteredList, function (item, index) {
                           return _c(
                             "div",
-                            { key: "t" + index, staticClass: "col-3" },
+                            { key: "t" + index, staticClass: "col-4" },
                             [
                               item.stock > 0
                                 ? _c(
