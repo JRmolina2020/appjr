@@ -4143,9 +4143,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (this.typesale == 1) {
         priceD = item.price;
       } else {
-        priceD = item.price_twoprice;
+        priceD = item.price_two;
       }
 
+      console.log(priceD);
       this.form.product.push({
         product_id: item.id,
         cant: 1,
@@ -4196,6 +4197,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     normalite: function normalite() {
       this.activeItem = "home";
+      this.form.product = [];
     },
     incrementDetail: function incrementDetail(index, stock) {
       this.form.product[index].cant++;

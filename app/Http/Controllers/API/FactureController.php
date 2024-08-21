@@ -97,7 +97,7 @@ class FactureController extends Controller
             ->select(
                 'p.name as name_product',
                 'p.price as price',
-                'd.cant',
+                'p.price as price_two',
                 'd.sub',
                 'd.discount',
                 'p.id',

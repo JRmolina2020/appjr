@@ -489,8 +489,9 @@ export default {
             if (this.typesale == 1) {
                 priceD = item.price;
             } else {
-                priceD = item.price_twoprice;
+                priceD = item.price_two;
             }
+            console.log(priceD);
             this.form.product.push({
                 product_id: item.id,
                 cant: 1,
@@ -544,6 +545,7 @@ export default {
         },
         normalite() {
             this.activeItem = "home";
+            this.form.product = [];
         },
 
         incrementDetail(index, stock) {
