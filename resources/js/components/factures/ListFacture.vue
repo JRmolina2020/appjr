@@ -40,15 +40,7 @@
                                     <i class="fi fi-calculator"></i>
                                 </button>
                             </th>
-                            <th>
-                                <a
-                                    href="#"
-                                    class="btn btn-tool"
-                                    @click="destroy(row.id)"
-                                >
-                                    <i class="fi fi-trash"></i>
-                                </a>
-                            </th>
+                            <th></th>
                         </tr>
                     </template>
                 </VTable>
@@ -105,6 +97,7 @@
                                 <th>Produto</th>
                                 <th>Precio</th>
                                 <th>Cant</th>
+                                <th>Descuento</th>
                                 <th>sub</th>
                             </tr>
                         </template>
@@ -115,6 +108,14 @@
                                 </th>
                                 <td>${{ row.price | currency }}</td>
                                 <td>{{ row.cant }}</td>
+                                <td>
+                                    {{ row.discount }}% -
+                                    {{
+                                        (((row.price * row.cant) / 100) *
+                                            row.discount)
+                                            | currency
+                                    }}
+                                </td>
                                 <td>${{ row.sub | currency }}</td>
                             </tr>
                         </template>
@@ -160,6 +161,26 @@
                 >
                     <i class="fi fi-print"></i>
                 </button>
+                <button class="btn btn-tool" @click="passverified()">
+                    <i class="fi fi-trash"></i>
+                </button>
+            </div>
+
+            <div class="input-group mb-3 mt-3" v-if="viewpass">
+                <input
+                    type="password"
+                    v-model="password"
+                    class="form-control"
+                />
+                <div class="input-group-append">
+                    <button
+                        class="btn btn-outline-danger"
+                        @click="destroy(facid)"
+                        type="button"
+                    >
+                        E
+                    </button>
+                </div>
             </div>
         </div>
         <!-- end -->
@@ -257,6 +278,8 @@ export default {
             currentPage: 1,
             totalPages2: 1,
             currentPage2: 1,
+            viewpass: 0,
+            password: "",
             filters: {
                 name: { value: "", keys: ["name"] },
             },
@@ -334,17 +357,27 @@ export default {
         },
 
         async destroy(id) {
-            let url = this.urlfac + "/" + id;
-            let response = await axios.delete(url);
-            try {
-                this.getList();
-                Swal.fire({
-                    title: `${response.data.message}`,
-                    icon: "success",
-                });
-            } catch (error) {
-                console.log(error);
+            let validate = "borradoabcd" + id;
+            if (this.password == validate) {
+                let url = this.urlfac + "/" + id;
+                let response = await axios.delete(url);
+                try {
+                    this.getList();
+                    this.tabletype = 1;
+                    (this.password = ""),
+                        Swal.fire({
+                            title: `${response.data.message}`,
+                            icon: "success",
+                        });
+                } catch (error) {
+                    console.log(error);
+                }
+            } else {
+                alert("clave invalida");
             }
+        },
+        passverified() {
+            this.viewpass = 1;
         },
     },
 };

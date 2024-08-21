@@ -3411,6 +3411,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3426,6 +3447,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       currentPage: 1,
       totalPages2: 1,
       currentPage2: 1,
+      viewpass: 0,
+      password: "",
       filters: {
         name: {
           value: "",
@@ -3506,22 +3529,30 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        var url, response;
+        var validate, url, response;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                validate = "borradoabcd" + id;
+
+                if (!(_this.password == validate)) {
+                  _context.next = 9;
+                  break;
+                }
+
                 url = _this.urlfac + "/" + id;
-                _context.next = 3;
+                _context.next = 5;
                 return axios["delete"](url);
 
-              case 3:
+              case 5:
                 response = _context.sent;
 
                 try {
                   _this.getList();
 
-                  Swal.fire({
+                  _this.tabletype = 1;
+                  _this.password = "", Swal.fire({
                     title: "".concat(response.data.message),
                     icon: "success"
                   });
@@ -3529,13 +3560,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                   console.log(error);
                 }
 
-              case 5:
+                _context.next = 10;
+                break;
+
+              case 9:
+                alert("clave invalida");
+
+              case 10:
               case "end":
                 return _context.stop();
             }
           }
         }, _callee);
       }))();
+    },
+    passverified: function passverified() {
+      this.viewpass = 1;
     }
   }
 });
@@ -3582,6 +3622,43 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3937,6 +4014,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         tot: 1,
         efecty: null,
         other: 0,
+        discount: 0,
         product: []
       }
     };
@@ -4065,7 +4143,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (this.typesale == 1) {
         priceD = item.price;
       } else {
-        priceD = item.price_two;
+        priceD = item.price_twoprice;
       }
 
       this.form.product.push({
@@ -4073,6 +4151,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         cant: 1,
         sub: 0,
         price: priceD,
+        pricef: priceD,
         discount: 0,
         namep: item.name,
         stock: item.stock
@@ -4087,18 +4166,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
       this.ProductRowUnique();
     },
-    // show(row) {
-    //     this.form.id = row.id;
-    //     this.form.name_client = row.name_client;
-    //     this.form.nit = row.nit;
-    //     this.form.phone = row.phone;
-    //     $("#model").modal("show");
-    //     this.send = true;
-    //     let obj = {
-    //         prop1: this.form.id,
-    //     };
-    //     this.$store.dispatch("Facdactions", obj);
-    // },
     clear: function clear() {
       this.form.id = null;
       this.form.client_id = null;
@@ -4139,6 +4206,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       if (num != 1) {
         this.form.product[index].cant--;
+      }
+
+      this.calculateEfecty();
+    },
+    incrementdiscount: function incrementdiscount(index) {
+      var num = this.form.product[index].discount;
+
+      if (num <= 95) {
+        this.form.product[index].discount = this.form.product[index].discount + 5;
+        var discount = 0;
+        discount = parseInt(this.form.product[index].price) / 100 * this.form.product[index].discount;
+      }
+
+      this.calculateEfecty();
+    },
+    decrementdiscount: function decrementdiscount(index) {
+      var num = this.form.product[index].discount;
+
+      if (num >= 5) {
+        var discount = 0;
+        this.form.product[index].discount = this.form.product[index].discount - 5;
+        discount = parseInt(this.form.product[index].price) / 100 * this.form.product[index].discount;
       }
 
       this.calculateEfecty();
@@ -82051,21 +82140,7 @@ var render = function () {
                               ),
                             ]),
                             _vm._v(" "),
-                            _c("th", [
-                              _c(
-                                "a",
-                                {
-                                  staticClass: "btn btn-tool",
-                                  attrs: { href: "#" },
-                                  on: {
-                                    click: function ($event) {
-                                      return _vm.destroy(row.id)
-                                    },
-                                  },
-                                },
-                                [_c("i", { staticClass: "fi fi-trash" })]
-                              ),
-                            ]),
+                            _c("th"),
                           ])
                         })
                       },
@@ -82073,7 +82148,7 @@ var render = function () {
                   ],
                   null,
                   false,
-                  1801757218
+                  4026440726
                 ),
               }),
               _vm._v(" "),
@@ -82178,6 +82253,8 @@ var render = function () {
                             _vm._v(" "),
                             _c("th", [_vm._v("Cant")]),
                             _vm._v(" "),
+                            _c("th", [_vm._v("Descuento")]),
+                            _vm._v(" "),
                             _c("th", [_vm._v("sub")]),
                           ]),
                         ]
@@ -82205,6 +82282,21 @@ var render = function () {
                             ]),
                             _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(row.cant))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(row.discount) +
+                                  "% -\n                                " +
+                                  _vm._s(
+                                    _vm._f("currency")(
+                                      ((row.price * row.cant) / 100) *
+                                        row.discount
+                                    )
+                                  ) +
+                                  "\n                            "
+                              ),
+                            ]),
                             _vm._v(" "),
                             _c("td", [
                               _vm._v("$" + _vm._s(_vm._f("currency")(row.sub))),
@@ -82272,7 +82364,62 @@ var render = function () {
               },
               [_c("i", { staticClass: "fi fi-print" })]
             ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-tool",
+                on: {
+                  click: function ($event) {
+                    return _vm.passverified()
+                  },
+                },
+              },
+              [_c("i", { staticClass: "fi fi-trash" })]
+            ),
           ]),
+          _vm._v(" "),
+          _vm.viewpass
+            ? _c("div", { staticClass: "input-group mb-3 mt-3" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.password,
+                      expression: "password",
+                    },
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "password" },
+                  domProps: { value: _vm.password },
+                  on: {
+                    input: function ($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.password = $event.target.value
+                    },
+                  },
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "input-group-append" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-outline-danger",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function ($event) {
+                          return _vm.destroy(_vm.facid)
+                        },
+                      },
+                    },
+                    [_vm._v("\n                    E\n                ")]
+                  ),
+                ]),
+              ])
+            : _vm._e(),
         ]),
     _vm._v(" "),
     _c(
@@ -82504,7 +82651,7 @@ var render = function () {
         {
           attrs: {
             title: "Registro de cotización",
-            sone: "modal-dialog modal-md",
+            sone: "modal-dialog modal-lg",
           },
           on: { clear: _vm.clear },
         },
@@ -82664,7 +82811,7 @@ var render = function () {
                         _vm._l(_vm.filteredList, function (item, index) {
                           return _c(
                             "div",
-                            { key: "t" + index, staticClass: "col-4" },
+                            { key: "t" + index, staticClass: "col-3" },
                             [
                               item.stock > 0
                                 ? _c(
@@ -82744,9 +82891,11 @@ var render = function () {
                             _vm._v(" "),
                             _c("th", [_vm._v("Cant")]),
                             _vm._v(" "),
-                            _c("th", [_vm._v("Sub")]),
+                            _c("th", [_vm._v("%Descuent")]),
                             _vm._v(" "),
-                            _c("th"),
+                            _c("th", [_vm._v("T")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Sub")]),
                           ]),
                         ]),
                         _vm._v(" "),
@@ -82801,12 +82950,61 @@ var render = function () {
                               ]),
                               _vm._v(" "),
                               _c("td", [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn bg-danger btn-xs",
+                                    attrs: { type: "button" },
+                                    on: {
+                                      click: function ($event) {
+                                        return _vm.decrementdiscount(index)
+                                      },
+                                    },
+                                  },
+                                  [_c("i", { staticClass: "fi fi-angle-down" })]
+                                ),
+                                _vm._v(
+                                  "\n                                        " +
+                                    _vm._s(item.discount) +
+                                    "%\n\n                                        "
+                                ),
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn bg-info btn-xs",
+                                    attrs: { type: "button" },
+                                    on: {
+                                      click: function ($event) {
+                                        return _vm.incrementdiscount(index)
+                                      },
+                                    },
+                                  },
+                                  [_c("i", { staticClass: "fi fi-angle-up" })]
+                                ),
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v(
+                                  "\n                                        " +
+                                    _vm._s(
+                                      _vm._f("currency")(
+                                        ((item.price * item.cant) / 100) *
+                                          _vm.form.product[index].discount
+                                      )
+                                    ) +
+                                    "\n                                    "
+                                ),
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
                                 _vm._v(
                                   "\n                                        " +
                                     _vm._s(
                                       _vm._f("currency")(
                                         (_vm.form.product[index].sub =
-                                          item.price * item.cant)
+                                          item.price * item.cant -
+                                          ((item.price * item.cant) / 100) *
+                                            _vm.form.product[index].discount)
                                       )
                                     ) +
                                     "\n                                    "
@@ -82950,7 +83148,7 @@ var render = function () {
                             ),
                           ]),
                           _vm._v(" "),
-                          _c("div", { staticClass: "col-lg-6 col-12" }, [
+                          _c("div", { staticClass: "col-lg-4 col-12" }, [
                             _c(
                               "div",
                               { staticClass: "form-group" },
@@ -83021,7 +83219,7 @@ var render = function () {
                             ),
                           ]),
                           _vm._v(" "),
-                          _c("div", { staticClass: "col-lg-6 col-12" }, [
+                          _c("div", { staticClass: "col-lg-4 col-12" }, [
                             _c("div", { staticClass: "form-group" }, [
                               _c("input", {
                                 directives: [

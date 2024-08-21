@@ -3,7 +3,7 @@
         <Modal-Resource
             v-on:clear="clear"
             title="Registro de cotización"
-            sone="modal-dialog modal-md"
+            sone="modal-dialog modal-lg"
         >
             <section @click="normalite()" slot="titlebutton">
                 Registrar cotización
@@ -78,7 +78,7 @@
                             <div
                                 v-for="(item, index) in filteredList"
                                 :key="'t' + index"
-                                class="col-4"
+                                class="col-3"
                             >
                                 <div
                                     v-if="item.stock > 0"
@@ -113,8 +113,9 @@
                                         <th>Nombre</th>
                                         <th>Precio</th>
                                         <th>Cant</th>
+                                        <th>%Descuent</th>
+                                        <th>T</th>
                                         <th>Sub</th>
-                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -144,12 +145,48 @@
                                             </button>
                                         </td>
                                         <td>
+                                            <button
+                                                type="button"
+                                                @click="
+                                                    decrementdiscount(index)
+                                                "
+                                                class="btn bg-danger btn-xs"
+                                            >
+                                                <i class="fi fi-angle-down"></i>
+                                            </button>
+                                            {{ item.discount }}%
+
+                                            <button
+                                                type="button"
+                                                @click="
+                                                    incrementdiscount(index)
+                                                "
+                                                class="btn bg-info btn-xs"
+                                            >
+                                                <i class="fi fi-angle-up"></i>
+                                            </button>
+                                        </td>
+                                        <td>
                                             {{
-                                                (form.product[index].sub =
-                                                    item.price * item.cant)
+                                                (((item.price * item.cant) /
+                                                    100) *
+                                                    form.product[index]
+                                                        .discount)
                                                     | currency
                                             }}
                                         </td>
+                                        <td>
+                                            {{
+                                                (form.product[index].sub =
+                                                    item.price * item.cant -
+                                                    ((item.price * item.cant) /
+                                                        100) *
+                                                        form.product[index]
+                                                            .discount)
+                                                    | currency
+                                            }}
+                                        </td>
+
                                         <td>
                                             <button
                                                 type="button"
@@ -207,7 +244,7 @@
                                         }}</small
                                     >
                                 </div>
-                                <div class="col-lg-6 col-12">
+                                <div class="col-lg-4 col-12">
                                     <div class="form-group">
                                         <currency-input
                                             required
@@ -236,7 +273,7 @@
                                         >
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-12">
+                                <div class="col-lg-4 col-12">
                                     <div class="form-group">
                                         <input
                                             type="text"
@@ -358,6 +395,7 @@ export default {
                 tot: 1,
                 efecty: null,
                 other: 0,
+                discount: 0,
                 product: [],
             },
         };
@@ -451,13 +489,14 @@ export default {
             if (this.typesale == 1) {
                 priceD = item.price;
             } else {
-                priceD = item.price_two;
+                priceD = item.price_twoprice;
             }
             this.form.product.push({
                 product_id: item.id,
                 cant: 1,
                 sub: 0,
                 price: priceD,
+                pricef: priceD,
                 discount: 0,
                 namep: item.name,
                 stock: item.stock,
@@ -474,18 +513,7 @@ export default {
 
             this.ProductRowUnique();
         },
-        // show(row) {
-        //     this.form.id = row.id;
-        //     this.form.name_client = row.name_client;
-        //     this.form.nit = row.nit;
-        //     this.form.phone = row.phone;
-        //     $("#model").modal("show");
-        //     this.send = true;
-        //     let obj = {
-        //         prop1: this.form.id,
-        //     };
-        //     this.$store.dispatch("Facdactions", obj);
-        // },
+
         clear() {
             this.form.id = null;
             this.form.client_id = null;
@@ -529,6 +557,30 @@ export default {
             }
             this.calculateEfecty();
         },
+        incrementdiscount(index) {
+            let num = this.form.product[index].discount;
+            if (num <= 95) {
+                this.form.product[index].discount =
+                    this.form.product[index].discount + 5;
+                let discount = 0;
+                discount =
+                    (parseInt(this.form.product[index].price) / 100) *
+                    this.form.product[index].discount;
+            }
+            this.calculateEfecty();
+        },
+        decrementdiscount(index) {
+            let num = this.form.product[index].discount;
+            if (num >= 5) {
+                let discount = 0;
+                this.form.product[index].discount =
+                    this.form.product[index].discount - 5;
+                discount =
+                    (parseInt(this.form.product[index].price) / 100) *
+                    this.form.product[index].discount;
+            }
+            this.calculateEfecty();
+        },
 
         removeDetail(index) {
             this.form.product.splice(index, 1);
@@ -565,6 +617,7 @@ export default {
         equalsTot() {
             this.form.other = this.onViewTot - this.form.efecty;
         },
+
         calculateEfecty() {
             this.form.efecty = this.onViewTot;
             this.form.other = 0;
