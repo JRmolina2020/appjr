@@ -99,7 +99,9 @@ class FactureController extends Controller
                 'p.price as price',
                 'p.price as price_two',
                 'd.sub',
+                'd.cant',
                 'd.discount',
+
                 'p.id',
 
             )

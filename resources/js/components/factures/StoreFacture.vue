@@ -105,7 +105,7 @@
                         :class="{ 'active show': isActive('view') }"
                         id="view"
                     >
-                        <div class="table-responsive">
+                        <div v-if="viewtabledetail" class="table-responsive">
                             T:{{ sumProducts }}
                             <table class="table table-striped">
                                 <thead>
@@ -116,6 +116,8 @@
                                         <th>%Descuent</th>
                                         <th>T</th>
                                         <th>Sub</th>
+                                        <th></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -196,9 +198,54 @@
                                                 <i class="fi fi-close-a"></i>
                                             </button>
                                         </td>
+                                        <td>
+                                            <button
+                                                type="button"
+                                                @click="
+                                                    viewdiscount(item, index)
+                                                "
+                                                class="btn bg-info"
+                                            >
+                                                <i class="fi fi-dollar"></i>
+                                            </button>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <div v-else>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Precio</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{ this.viewref }}</td>
+                                        <td>{{ this.viewprice }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="form-group">
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    v-model.number="price[indexproduct]"
+                                    @change="updateprice(indexproduct)"
+                                />
+                                <small id="helpId" class="form-text text-muted"
+                                    >Cambia el precio</small
+                                >
+                                <strong>{{ price[indexproduct] }}</strong>
+                            </div>
+                            <button
+                                class="btn btn-tool"
+                                @click="viewtabledetail = 1"
+                            >
+                                <i class="fi fi-dollar"></i>
+                            </button>
                         </div>
                     </div>
                     <div
@@ -389,6 +436,11 @@ export default {
             activeItem: "home",
             typesale: "1",
             filters: "",
+            viewtabledetail: 1,
+            viewprice: "",
+            viewref: "",
+            price: [],
+            indexproduct: 0,
             form: {
                 id: null,
                 client_id: null,
@@ -624,6 +676,19 @@ export default {
             this.form.efecty = this.onViewTot;
             this.form.other = 0;
             this.filters = "";
+        },
+        viewdiscount(item, index) {
+            console.log(item);
+            this.viewtabledetail = 0;
+            this.viewref = item.namep;
+            this.viewprice = item.price;
+            this.indexproduct = index;
+            this.price = [];
+        },
+        updateprice(index) {
+            this.form.product[index].price = this.price[index];
+
+            console.log(index);
         },
     },
 };

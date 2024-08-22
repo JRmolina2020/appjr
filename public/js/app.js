@@ -3426,12 +3426,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 
 
@@ -3963,6 +3957,53 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4008,6 +4049,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       activeItem: "home",
       typesale: "1",
       filters: "",
+      viewtabledetail: 1,
+      viewprice: "",
+      viewref: "",
+      price: [],
+      indexproduct: 0,
       form: {
         id: null,
         client_id: null,
@@ -4267,6 +4313,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.form.efecty = this.onViewTot;
       this.form.other = 0;
       this.filters = "";
+    },
+    viewdiscount: function viewdiscount(item, index) {
+      console.log(item);
+      this.viewtabledetail = 0;
+      this.viewref = item.namep;
+      this.viewprice = item.price;
+      this.indexproduct = index;
+      this.price = [];
+    },
+    updateprice: function updateprice(index) {
+      this.form.product[index].price = this.price[index];
+      console.log(index);
     }
   }
 });
@@ -82191,7 +82249,7 @@ var render = function () {
             _c("div", { staticClass: "table-responsive" }, [
               _c("p", [_c("strong", [_vm._v("VENTA #" + _vm._s(_vm.facid))])]),
               _vm._v(" "),
-              _c("table", { staticClass: "table table-dark" }, [
+              _c("table", { staticClass: "table" }, [
                 _vm._m(0),
                 _vm._v(" "),
                 _c(
@@ -82202,22 +82260,6 @@ var render = function () {
                         _vm._v(
                           "\n                                " +
                             _vm._s(cli.nit) +
-                            "\n                            "
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _vm._v(
-                          "\n                                " +
-                            _vm._s(cli.name_client) +
-                            "\n                            "
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _vm._v(
-                          "\n                                " +
-                            _vm._s(cli.tel) +
                             "\n                            "
                         ),
                       ]),
@@ -82249,13 +82291,13 @@ var render = function () {
                       fn: function () {
                         return [
                           _c("tr", [
-                            _c("th", [_vm._v("Produto")]),
+                            _c("th", [_vm._v("Item")]),
                             _vm._v(" "),
                             _c("th", [_vm._v("Precio")]),
                             _vm._v(" "),
                             _c("th", [_vm._v("Cant")]),
                             _vm._v(" "),
-                            _c("th", [_vm._v("Descuento")]),
+                            _c("th", [_vm._v("Des")]),
                             _vm._v(" "),
                             _c("th", [_vm._v("sub")]),
                           ]),
@@ -82279,7 +82321,8 @@ var render = function () {
                             _vm._v(" "),
                             _c("td", [
                               _vm._v(
-                                "$" + _vm._s(_vm._f("currency")(row.price))
+                                "$" +
+                                  _vm._s(_vm._f("currency")(row.sub / row.cant))
                               ),
                             ]),
                             _vm._v(" "),
@@ -82557,10 +82600,6 @@ var staticRenderFns = [
     return _c("thead", [
       _c("tr", [
         _c("th", [_vm._v("Nit.")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Cliente")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Tel")]),
         _vm._v(" "),
         _c("th", [_vm._v("Fecha")]),
       ]),
@@ -82878,67 +82917,124 @@ var render = function () {
                     attrs: { id: "view" },
                   },
                   [
-                    _c("div", { staticClass: "table-responsive" }, [
-                      _vm._v(
-                        "\n                        T:" +
-                          _vm._s(_vm.sumProducts) +
-                          "\n                        "
-                      ),
-                      _c("table", { staticClass: "table table-striped" }, [
-                        _c("thead", [
-                          _c("tr", [
-                            _c("th", [_vm._v("Nombre")]),
-                            _vm._v(" "),
-                            _c("th", [_vm._v("Precio")]),
-                            _vm._v(" "),
-                            _c("th", [_vm._v("Cant")]),
-                            _vm._v(" "),
-                            _c("th", [_vm._v("%Descuent")]),
-                            _vm._v(" "),
-                            _c("th", [_vm._v("T")]),
-                            _vm._v(" "),
-                            _c("th", [_vm._v("Sub")]),
-                          ]),
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "tbody",
-                          _vm._l(_vm.form.product, function (item, index) {
-                            return _c("tr", { key: "t" + index }, [
-                              _c("td", [_vm._v(_vm._s(item.namep))]),
-                              _vm._v(" "),
-                              _c("td", [
-                                _vm._v(_vm._s(_vm._f("currency")(item.price))),
+                    _vm.viewtabledetail
+                      ? _c("div", { staticClass: "table-responsive" }, [
+                          _vm._v(
+                            "\n                        T:" +
+                              _vm._s(_vm.sumProducts) +
+                              "\n                        "
+                          ),
+                          _c("table", { staticClass: "table table-striped" }, [
+                            _c("thead", [
+                              _c("tr", [
+                                _c("th", [_vm._v("Nombre")]),
+                                _vm._v(" "),
+                                _c("th", [_vm._v("Precio")]),
+                                _vm._v(" "),
+                                _c("th", [_vm._v("Cant")]),
+                                _vm._v(" "),
+                                _c("th", [_vm._v("%Descuent")]),
+                                _vm._v(" "),
+                                _c("th", [_vm._v("T")]),
+                                _vm._v(" "),
+                                _c("th", [_vm._v("Sub")]),
+                                _vm._v(" "),
+                                _c("th"),
+                                _vm._v(" "),
+                                _c("th"),
                               ]),
-                              _vm._v(" "),
-                              _c("td", [
-                                _c(
-                                  "button",
-                                  {
-                                    staticClass: "btn bg-danger btn-xs",
-                                    attrs: { type: "button" },
-                                    on: {
-                                      click: function ($event) {
-                                        return _vm.decrementDetail(index)
-                                      },
-                                    },
-                                  },
-                                  [_c("i", { staticClass: "fi fi-angle-down" })]
-                                ),
-                                _vm._v(
-                                  "\n                                        " +
-                                    _vm._s(item.cant) +
-                                    "\n\n                                        "
-                                ),
-                                item.cant < item.stock
-                                  ? _c(
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "tbody",
+                              _vm._l(_vm.form.product, function (item, index) {
+                                return _c("tr", { key: "t" + index }, [
+                                  _c("td", [_vm._v(_vm._s(item.namep))]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _vm._v(
+                                      _vm._s(_vm._f("currency")(item.price))
+                                    ),
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c(
                                       "button",
                                       {
-                                        staticClass: "btn bg-success btn-xs",
+                                        staticClass: "btn bg-danger btn-xs",
                                         attrs: { type: "button" },
                                         on: {
                                           click: function ($event) {
-                                            return _vm.incrementDetail(index)
+                                            return _vm.decrementDetail(index)
+                                          },
+                                        },
+                                      },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fi fi-angle-down",
+                                        }),
+                                      ]
+                                    ),
+                                    _vm._v(
+                                      "\n                                        " +
+                                        _vm._s(item.cant) +
+                                        "\n\n                                        "
+                                    ),
+                                    item.cant < item.stock
+                                      ? _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "btn bg-success btn-xs",
+                                            attrs: { type: "button" },
+                                            on: {
+                                              click: function ($event) {
+                                                return _vm.incrementDetail(
+                                                  index
+                                                )
+                                              },
+                                            },
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "fi fi-angle-up",
+                                            }),
+                                          ]
+                                        )
+                                      : _vm._e(),
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn bg-danger btn-xs",
+                                        attrs: { type: "button" },
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.decrementdiscount(index)
+                                          },
+                                        },
+                                      },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fi fi-angle-down",
+                                        }),
+                                      ]
+                                    ),
+                                    _vm._v(
+                                      "\n                                        " +
+                                        _vm._s(item.discount) +
+                                        "%\n\n                                        "
+                                    ),
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn bg-info btn-xs",
+                                        attrs: { type: "button" },
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.incrementdiscount(index)
                                           },
                                         },
                                       },
@@ -82947,93 +83043,159 @@ var render = function () {
                                           staticClass: "fi fi-angle-up",
                                         }),
                                       ]
-                                    )
-                                  : _vm._e(),
-                              ]),
-                              _vm._v(" "),
-                              _c("td", [
-                                _c(
-                                  "button",
-                                  {
-                                    staticClass: "btn bg-danger btn-xs",
-                                    attrs: { type: "button" },
-                                    on: {
-                                      click: function ($event) {
-                                        return _vm.decrementdiscount(index)
+                                    ),
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _vm._v(
+                                      "\n                                        " +
+                                        _vm._s(
+                                          _vm._f("currency")(
+                                            ((item.price * item.cant) / 100) *
+                                              _vm.form.product[index].discount
+                                          )
+                                        ) +
+                                        "\n                                    "
+                                    ),
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _vm._v(
+                                      "\n                                        " +
+                                        _vm._s(
+                                          _vm._f("currency")(
+                                            (_vm.form.product[index].sub =
+                                              item.price * item.cant -
+                                              ((item.price * item.cant) / 100) *
+                                                _vm.form.product[index]
+                                                  .discount)
+                                          )
+                                        ) +
+                                        "\n                                    "
+                                    ),
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn bg-danger",
+                                        attrs: { type: "button" },
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.removeDetail(index)
+                                          },
+                                        },
                                       },
-                                    },
-                                  },
-                                  [_c("i", { staticClass: "fi fi-angle-down" })]
-                                ),
-                                _vm._v(
-                                  "\n                                        " +
-                                    _vm._s(item.discount) +
-                                    "%\n\n                                        "
-                                ),
-                                _c(
-                                  "button",
-                                  {
-                                    staticClass: "btn bg-info btn-xs",
-                                    attrs: { type: "button" },
-                                    on: {
-                                      click: function ($event) {
-                                        return _vm.incrementdiscount(index)
+                                      [
+                                        _c("i", {
+                                          staticClass: "fi fi-close-a",
+                                        }),
+                                      ]
+                                    ),
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn bg-info",
+                                        attrs: { type: "button" },
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.viewdiscount(item, index)
+                                          },
+                                        },
                                       },
-                                    },
-                                  },
-                                  [_c("i", { staticClass: "fi fi-angle-up" })]
-                                ),
+                                      [_c("i", { staticClass: "fi fi-dollar" })]
+                                    ),
+                                  ]),
+                                ])
+                              }),
+                              0
+                            ),
+                          ]),
+                        ])
+                      : _c("div", [
+                          _c("table", { staticClass: "table" }, [
+                            _c("thead", [
+                              _c("tr", [
+                                _c("th", [_vm._v("Producto")]),
+                                _vm._v(" "),
+                                _c("th", [_vm._v("Precio")]),
                               ]),
-                              _vm._v(" "),
-                              _c("td", [
-                                _vm._v(
-                                  "\n                                        " +
-                                    _vm._s(
-                                      _vm._f("currency")(
-                                        ((item.price * item.cant) / 100) *
-                                          _vm.form.product[index].discount
-                                      )
-                                    ) +
-                                    "\n                                    "
-                                ),
+                            ]),
+                            _vm._v(" "),
+                            _c("tbody", [
+                              _c("tr", [
+                                _c("td", [_vm._v(_vm._s(this.viewref))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(this.viewprice))]),
                               ]),
-                              _vm._v(" "),
-                              _c("td", [
-                                _vm._v(
-                                  "\n                                        " +
-                                    _vm._s(
-                                      _vm._f("currency")(
-                                        (_vm.form.product[index].sub =
-                                          item.price * item.cant -
-                                          ((item.price * item.cant) / 100) *
-                                            _vm.form.product[index].discount)
-                                      )
-                                    ) +
-                                    "\n                                    "
-                                ),
-                              ]),
-                              _vm._v(" "),
-                              _c("td", [
-                                _c(
-                                  "button",
-                                  {
-                                    staticClass: "btn bg-danger",
-                                    attrs: { type: "button" },
-                                    on: {
-                                      click: function ($event) {
-                                        return _vm.removeDetail(index)
-                                      },
-                                    },
-                                  },
-                                  [_c("i", { staticClass: "fi fi-close-a" })]
-                                ),
-                              ]),
-                            ])
-                          }),
-                          0
-                        ),
-                      ]),
-                    ]),
+                            ]),
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model.number",
+                                  value: _vm.price[_vm.indexproduct],
+                                  expression: "price[indexproduct]",
+                                  modifiers: { number: true },
+                                },
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "number" },
+                              domProps: { value: _vm.price[_vm.indexproduct] },
+                              on: {
+                                change: function ($event) {
+                                  return _vm.updateprice(_vm.indexproduct)
+                                },
+                                input: function ($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.price,
+                                    _vm.indexproduct,
+                                    _vm._n($event.target.value)
+                                  )
+                                },
+                                blur: function ($event) {
+                                  return _vm.$forceUpdate()
+                                },
+                              },
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "small",
+                              {
+                                staticClass: "form-text text-muted",
+                                attrs: { id: "helpId" },
+                              },
+                              [_vm._v("Cambia el precio")]
+                            ),
+                            _vm._v(" "),
+                            _c("strong", [
+                              _vm._v(_vm._s(_vm.price[_vm.indexproduct])),
+                            ]),
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-tool",
+                              on: {
+                                click: function ($event) {
+                                  _vm.viewtabledetail = 1
+                                },
+                              },
+                            },
+                            [_c("i", { staticClass: "fi fi-dollar" })]
+                          ),
+                        ]),
                   ]
                 ),
                 _vm._v(" "),

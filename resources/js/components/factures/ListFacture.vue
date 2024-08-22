@@ -61,12 +61,11 @@
                     <p>
                         <strong>VENTA #{{ facid }}</strong>
                     </p>
-                    <table class="table table-dark">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th>Nit.</th>
-                                <th>Cliente</th>
-                                <th>Tel</th>
+
                                 <th>Fecha</th>
                             </tr>
                         </thead>
@@ -75,12 +74,7 @@
                                 <td>
                                     {{ cli.nit }}
                                 </td>
-                                <td>
-                                    {{ cli.name_client }}
-                                </td>
-                                <td>
-                                    {{ cli.tel }}
-                                </td>
+
                                 <td>
                                     {{ cli.date_facture }}
                                 </td>
@@ -94,10 +88,10 @@
                     <VTable :data="facd" class="table table-striped">
                         <template #head>
                             <tr>
-                                <th>Produto</th>
+                                <th>Item</th>
                                 <th>Precio</th>
                                 <th>Cant</th>
-                                <th>Descuento</th>
+                                <th>Des</th>
                                 <th>sub</th>
                             </tr>
                         </template>
@@ -106,7 +100,7 @@
                                 <th scope="row">
                                     {{ row.name_product }}
                                 </th>
-                                <td>${{ row.price | currency }}</td>
+                                <td>${{ (row.sub / row.cant) | currency }}</td>
                                 <td>{{ row.cant }}</td>
                                 <td>
                                     {{ row.discount }}% -
