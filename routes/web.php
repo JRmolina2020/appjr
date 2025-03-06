@@ -99,11 +99,13 @@ Route::group(['middleware' => 'auth'], function () {
             Route::delete('/investments/{id}', [InvestmentController::class, 'destroy'])->where('id', '[0-9]+');
             //fac
             Route::get('/fac/{date}/{date2}', [FactureController::class, 'index']);
+            Route::get('/factt/', [FactureController::class, 'totpormesa']);
             Route::get('/facd/{id}/', [FactureController::class, 'indexDetail']);
             Route::get('/facg/{date}/{date2}', [FactureController::class, 'gain']);
             Route::get('/fact/{date}/{date2}', [FactureController::class, 'type_sale']);
             Route::post('fac', [FactureController::class, 'store']);
             Route::delete('/fac/{id}', [FactureController::class, 'destroy'])->where('id', '[0-9]+');
+            Route::put('/factures/{id}', [FactureController::class, 'updateStatus'])->where('id', '[0-9]+');
             //product
             Route::get('/products', [ProductController::class, 'index']);
             Route::get('/productsL', [ProductController::class, 'index2']);

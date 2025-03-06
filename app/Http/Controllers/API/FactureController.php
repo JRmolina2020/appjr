@@ -23,7 +23,7 @@ class FactureController extends Controller
             $facture->user_id =  auth()->id();
             $facture->client_id = $request->client_id;
             $facture->tot = $request->tot;
-            $facture->status = 1;
+            $facture->status = 0;
             $facture->efecty = $request->efecty;
             $facture->other = $request->other;
             $facture->save();
@@ -82,7 +82,8 @@ class FactureController extends Controller
                 'f.status',
                 'f.efecty',
                 'f.other',
-                'f.date_facture'
+                'f.date_facture',
+                'f.status'
             )
             ->whereBetween('f.date_facture', [$date, $datetwo])
             ->where('f.user_id', $user_id)
@@ -101,12 +102,29 @@ class FactureController extends Controller
                 'd.sub',
                 'd.cant',
                 'd.discount',
-
                 'p.id',
 
             )
             ->where('d.facture_id', $id)
             ->orderBy('d.id', 'desc')->get();
+        return $fac;
+    }
+    public function totpormesa()
+    {
+        $user_id = Auth::id();
+        $fac = DB::table('factures as f')
+            ->join('users as u', 'u.id', '=', 'f.user_id')
+            ->join('clients as c', 'c.id', '=', 'f.client_id')
+            ->select(
+                'c.name as name_client',
+                DB::raw('SUM(f.tot) as total_facturado') // Suma total por cliente
+            )
+            ->where('f.user_id', $user_id)
+            ->where('f.status', 0) // Filtra solo las facturas con estado 0
+            ->groupBy('c.id', 'c.name') // Agrupar por cliente
+            ->orderByDesc('total_facturado')
+            ->get();
+
         return $fac;
     }
     public function gain($date, $datetwo)
@@ -144,5 +162,13 @@ class FactureController extends Controller
             ->where('user_id', $user_id)
             ->get();
         return $facture_tot;
+    }
+
+    public function updateStatus($id)
+    {
+        $facture = Facture::findOrFail($id, ['id']);
+        $facture->status = 1;
+        $facture->save();
+        return response()->json(["message" => "El estado ha cambiado a pagado"]);
     }
 }

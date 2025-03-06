@@ -486,6 +486,7 @@ export default {
             this.$store.dispatch("Facgactions", obj);
             this.$store.dispatch("Factactions", obj);
             this.$store.dispatch("Productsactions");
+            this.$store.dispatch("Facttactions");
         },
         add(id) {
             this.$validator.validate().then((valid) => {

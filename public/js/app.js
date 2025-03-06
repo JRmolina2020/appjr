@@ -3426,6 +3426,41 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3457,7 +3492,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   components: {
     DataExample: _Dataexample_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapState)(["status", "urlfac", "fac", "facd", "fact", "facg"])), {}, {
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapState)(["status", "urlfac", "fac", "facd", "fact", "facg", "factt"])), {}, {
     sumProduct: function sumProduct() {
       var tot = 0;
       this.facd.map(function (data) {
@@ -3509,6 +3544,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.$store.dispatch("Facactions", obj);
       this.$store.dispatch("Facgactions", obj);
       this.$store.dispatch("Factactions", obj);
+      this.$store.dispatch("Facttactions");
     },
     getDate: function getDate() {
       var obj = {
@@ -3570,6 +3606,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     passverified: function passverified() {
       this.viewpass = 1;
+    },
+    paymentstatus: function paymentstatus(id) {
+      var _this2 = this;
+
+      var url = "api/factures/" + id;
+      axios.put(url).then(function (response) {
+        Swal.fire({
+          title: "".concat(response.data.message),
+          icon: "success"
+        });
+
+        _this2.getList();
+      });
     }
   }
 });
@@ -4098,6 +4147,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.$store.dispatch("Facgactions", obj);
       this.$store.dispatch("Factactions", obj);
       this.$store.dispatch("Productsactions");
+      this.$store.dispatch("Facttactions");
     },
     add: function add(id) {
       var _this3 = this;
@@ -4395,6 +4445,21 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -7485,6 +7550,7 @@ vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_2_
     facd: [],
     fact: [],
     facg: [],
+    factt: [],
     products: [],
     productsL: [],
     clients: [],
@@ -7501,6 +7567,7 @@ vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_2_
     urlfact: '/api/fact',
     urlfacd: '/api/facd',
     urlfacg: '/api/facg',
+    urlfactt: '/api/factt',
     urlproduct: '/api/products',
     urlproductL: '/api/productsL',
     urlclient: '/api/clients'
@@ -7535,6 +7602,9 @@ vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_2_
     },
     Factmutations: function Factmutations(state, item) {
       state.fact = item;
+    },
+    Facttmutations: function Facttmutations(state, item) {
+      state.factt = item;
     },
     Facdmutations: function Facdmutations(state, item) {
       state.facd = item;
@@ -7940,7 +8010,7 @@ vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_2_
         }, _callee12, null, [[1, 9]]);
       }))();
     },
-    ProductsLactions: function ProductsLactions(_ref13) {
+    Facttactions: function Facttactions(_ref13) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee13() {
         var commit, state, response;
         return _regeneratorRuntime().wrap(function _callee13$(_context13) {
@@ -7950,29 +8020,30 @@ vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_2_
                 commit = _ref13.commit, state = _ref13.state;
                 _context13.prev = 1;
                 _context13.next = 4;
-                return axios__WEBPACK_IMPORTED_MODULE_0___default().get("".concat(state.urlproductL));
+                return axios__WEBPACK_IMPORTED_MODULE_0___default().get("".concat(state.urlfactt));
 
               case 4:
                 response = _context13.sent;
-                commit("ProductsLmutations", response.data);
+                commit("Facttmutations", response.data);
                 state.status = true;
-                _context13.next = 12;
+                console.log(response.data);
+                _context13.next = 13;
                 break;
 
-              case 9:
-                _context13.prev = 9;
+              case 10:
+                _context13.prev = 10;
                 _context13.t0 = _context13["catch"](1);
                 console.log(_context13.t0);
 
-              case 12:
+              case 13:
               case "end":
                 return _context13.stop();
             }
           }
-        }, _callee13, null, [[1, 9]]);
+        }, _callee13, null, [[1, 10]]);
       }))();
     },
-    Clientsactions: function Clientsactions(_ref14) {
+    ProductsLactions: function ProductsLactions(_ref14) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee14() {
         var commit, state, response;
         return _regeneratorRuntime().wrap(function _callee14$(_context14) {
@@ -7982,11 +8053,11 @@ vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_2_
                 commit = _ref14.commit, state = _ref14.state;
                 _context14.prev = 1;
                 _context14.next = 4;
-                return axios__WEBPACK_IMPORTED_MODULE_0___default().get("".concat(state.urlclient));
+                return axios__WEBPACK_IMPORTED_MODULE_0___default().get("".concat(state.urlproductL));
 
               case 4:
                 response = _context14.sent;
-                commit("Clientsmutations", response.data);
+                commit("ProductsLmutations", response.data);
                 state.status = true;
                 _context14.next = 12;
                 break;
@@ -8002,6 +8073,38 @@ vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_2_
             }
           }
         }, _callee14, null, [[1, 9]]);
+      }))();
+    },
+    Clientsactions: function Clientsactions(_ref15) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee15() {
+        var commit, state, response;
+        return _regeneratorRuntime().wrap(function _callee15$(_context15) {
+          while (1) {
+            switch (_context15.prev = _context15.next) {
+              case 0:
+                commit = _ref15.commit, state = _ref15.state;
+                _context15.prev = 1;
+                _context15.next = 4;
+                return axios__WEBPACK_IMPORTED_MODULE_0___default().get("".concat(state.urlclient));
+
+              case 4:
+                response = _context15.sent;
+                commit("Clientsmutations", response.data);
+                state.status = true;
+                _context15.next = 12;
+                break;
+
+              case 9:
+                _context15.prev = 9;
+                _context15.t0 = _context15["catch"](1);
+                console.log(_context15.t0);
+
+              case 12:
+              case "end":
+                return _context15.stop();
+            }
+          }
+        }, _callee15, null, [[1, 9]]);
       }))();
     }
   }
@@ -82132,7 +82235,7 @@ var render = function () {
                       fn: function () {
                         return [
                           _c("tr", [
-                            _c("th", [_vm._v("Nit")]),
+                            _c("th"),
                             _vm._v(" "),
                             _c("th", [_vm._v("Total")]),
                             _vm._v(" "),
@@ -82140,7 +82243,7 @@ var render = function () {
                             _vm._v(" "),
                             _c("th", [_vm._v("Tranfe")]),
                             _vm._v(" "),
-                            _c("th", [_vm._v("Fecha")]),
+                            _c("th"),
                             _vm._v(" "),
                             _c("th", [_vm._v("Ver")]),
                             _vm._v(" "),
@@ -82156,7 +82259,7 @@ var render = function () {
                         var rows = ref.rows
                         return _vm._l(rows, function (row) {
                           return _c("tr", { key: row.id }, [
-                            _c("td", [_vm._v(_vm._s(row.nit))]),
+                            _c("td", [_vm._v(_vm._s(row.name_client))]),
                             _vm._v(" "),
                             _c("td", [
                               _vm._v("$" + _vm._s(_vm._f("currency")(row.tot))),
@@ -82182,7 +82285,27 @@ var render = function () {
                                   ),
                                 ]),
                             _vm._v(" "),
-                            _c("th", [_vm._v(_vm._s(row.date_facture))]),
+                            row.status
+                              ? _c("td", [
+                                  _c("i", { staticClass: "fi fi-check" }, [
+                                    _vm._v(" Pago"),
+                                  ]),
+                                ])
+                              : _c("td", [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-tool clickable",
+                                      attrs: { type: "button" },
+                                      on: {
+                                        click: function ($event) {
+                                          return _vm.paymentstatus(row.id)
+                                        },
+                                      },
+                                    },
+                                    [_c("i", { staticClass: "fi fi-close" })]
+                                  ),
+                                ]),
                             _vm._v(" "),
                             _c("th", [
                               _c(
@@ -82208,7 +82331,7 @@ var render = function () {
                   ],
                   null,
                   false,
-                  4026440726
+                  571894372
                 ),
               }),
               _vm._v(" "),
@@ -82467,16 +82590,48 @@ var render = function () {
             : _vm._e(),
         ]),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "alert alert-primary mt-3", attrs: { role: "alert" } },
-      [_vm._v("\n        Revisa tus ventas\n    ")]
-    ),
+    _c("div", { staticClass: "col-lg-6 col-12" }, [
+      _c("div", { staticClass: "table-responsive" }, [
+        _c(
+          "div",
+          { staticClass: "alert alert-primary mt-3", attrs: { role: "alert" } },
+          [_vm._v("\n                Pendiente por cliente\n            ")]
+        ),
+        _vm._v(" "),
+        _c("table", { staticClass: "table" }, [
+          _vm._m(2),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.factt, function (item) {
+              return _c("tr", { key: item.id }, [
+                _c("td", { attrs: { scope: "row" } }, [
+                  _vm._v(_vm._s(item.name_client)),
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    "$" + _vm._s(_vm._f("currency")(item.total_facturado))
+                  ),
+                ]),
+              ])
+            }),
+            0
+          ),
+        ]),
+      ]),
+    ]),
     _vm._v(" "),
     _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-lg-4" }, [
+      _c("div", { staticClass: "col-lg-6 col-12" }, [
+        _c(
+          "div",
+          { staticClass: "alert alert-primary mt-3", attrs: { role: "alert" } },
+          [_vm._v("\n                Revisa tus ventas\n            ")]
+        ),
+        _vm._v(" "),
         _c("table", { staticClass: "table table-bordered table-dark" }, [
-          _vm._m(2),
+          _vm._m(3),
           _vm._v(" "),
           _c(
             "tfoot",
@@ -82497,7 +82652,7 @@ var render = function () {
     _vm._v(" "),
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-12" }, [
-        _vm._m(3),
+        _vm._m(4),
         _vm._v(" "),
         _c("div", { staticClass: "input-group" }, [
           _c("input", {
@@ -82566,7 +82721,7 @@ var render = function () {
     _c("div", [
       _c("div", { staticClass: "table-responsive" }, [
         _c("table", { staticClass: "table" }, [
-          _vm._m(4),
+          _vm._m(5),
           _vm._v(" "),
           _c(
             "tbody",
@@ -82618,6 +82773,18 @@ var staticRenderFns = [
         _c("td", [_vm._v("Tranfe")]),
         _vm._v(" "),
         _c("td", [_vm._v("Cant.")]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_c("i", { staticClass: "fi fi-users" })]),
+        _vm._v(" "),
+        _c("th", [_vm._v("TOTAL")]),
       ]),
     ])
   },
@@ -83597,58 +83764,133 @@ var render = function () {
   return _c(
     "div",
     [
+      _c("div", { staticClass: "form-group mt-3" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.filters.name.value,
+              expression: "filters.name.value",
+            },
+          ],
+          staticClass: "form-control",
+          attrs: { type: "text", placeholder: "Buscar productos" },
+          domProps: { value: _vm.filters.name.value },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.filters.name, "value", $event.target.value)
+            },
+          },
+        }),
+      ]),
+      _vm._v(" "),
       _c(
         "div",
-        { staticClass: "card-body" },
-        _vm._l(_vm.investments, function (item) {
-          return _c("div", { key: item.id }, [
-            _c("div", { staticClass: "card card-primary card-outline" }, [
-              _c("div", { staticClass: "card-header" }, [
-                _c("h5", { staticClass: "card-title" }, [
-                  _vm._v(_vm._s(item.product)),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "card-tools" }, [
-                  _c("a", { staticClass: "btn btn-tool" }, [
-                    _vm._v(
-                      "$" +
-                        _vm._s(_vm._f("currency")(item.cost)) +
-                        "\n                        "
+        { staticClass: "table-responsive mt-3" },
+        [
+          _c("VTable", {
+            staticClass: "table",
+            attrs: {
+              data: _vm.investments,
+              filters: _vm.filters,
+              "page-size": 10,
+              currentPage: _vm.currentPage,
+            },
+            on: {
+              "update:currentPage": function ($event) {
+                _vm.currentPage = $event
+              },
+              "update:current-page": function ($event) {
+                _vm.currentPage = $event
+              },
+              totalPagesChanged: function ($event) {
+                _vm.totalPages = $event
+              },
+            },
+            scopedSlots: _vm._u([
+              {
+                key: "head",
+                fn: function () {
+                  return [
+                    _c(
+                      "tr",
+                      [
+                        _c("VTh", { attrs: { sortKey: "name" } }, [
+                          _vm._v("Producto"),
+                        ]),
+                        _vm._v(" "),
+                        _c("th", [_vm._v("Cantidad")]),
+                        _vm._v(" "),
+                        _c("th", [_vm._v("Precio prod")]),
+                        _vm._v(" "),
+                        _c("th", [_vm._v("Total i.")]),
+                        _vm._v(" "),
+                        _c("th"),
+                      ],
+                      1
                     ),
-                  ]),
-                  _vm._v(" "),
-                  _c("a", { staticClass: "btn btn-tool" }, [
-                    _vm._v(_vm._s(item.quantity)),
-                  ]),
-                  _vm._v(" "),
-                  _c("a", { staticClass: "btn btn-tool" }, [
-                    _vm._v(
-                      "$" +
-                        _vm._s(_vm._f("currency")(item.quantity * item.cost))
-                    ),
-                  ]),
-                  _vm._v(" "),
-                  item.stock >= item.quantity
-                    ? _c(
-                        "a",
-                        {
-                          staticClass: "btn btn-tool",
-                          attrs: { href: "#" },
-                          on: {
-                            click: function ($event) {
-                              return _vm.destroy(item.id)
-                            },
-                          },
-                        },
-                        [_c("i", { staticClass: "fi fi-trash" })]
-                      )
-                    : _vm._e(),
-                ]),
-              ]),
+                  ]
+                },
+                proxy: true,
+              },
+              {
+                key: "body",
+                fn: function (ref) {
+                  var rows = ref.rows
+                  return _vm._l(rows, function (row) {
+                    return _c("tr", { key: row.id }, [
+                      _c("td", [_vm._v(_vm._s(row.product))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(row.quantity))]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v("$" + _vm._s(_vm._f("currency")(row.cost))),
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v(
+                          "$" +
+                            _vm._s(_vm._f("currency")(row.cost * row.quantity))
+                        ),
+                      ]),
+                      _vm._v(" "),
+                      _c("td"),
+                    ])
+                  })
+                },
+              },
             ]),
-          ])
-        }),
-        0
+          }),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "text-xs-center" },
+            [
+              _c("VTPagination", {
+                attrs: {
+                  currentPage: _vm.currentPage,
+                  "total-pages": _vm.totalPages,
+                  "boundary-links": true,
+                  maxPageLinks: 4,
+                },
+                on: {
+                  "update:currentPage": function ($event) {
+                    _vm.currentPage = $event
+                  },
+                  "update:current-page": function ($event) {
+                    _vm.currentPage = $event
+                  },
+                },
+              }),
+            ],
+            1
+          ),
+        ],
+        1
       ),
       _vm._v(" "),
       _vm._l(_vm.investmentstot, function (item, index) {

@@ -17,6 +17,7 @@ export default new Vuex.Store({
         facd:[],
         fact:[],
         facg:[],
+        factt:[],
         products:[],
         productsL:[],
         clients:[],
@@ -33,6 +34,7 @@ export default new Vuex.Store({
         urlfact:'/api/fact',
         urlfacd:'/api/facd',
         urlfacg:'/api/facg',
+        urlfactt:'/api/factt',
         urlproduct:'/api/products',
         urlproductL:'/api/productsL',
         urlclient:'/api/clients',
@@ -70,6 +72,9 @@ export default new Vuex.Store({
         },
         Factmutations(state, item) {
             state.fact = item;
+        },
+        Facttmutations(state, item) {
+            state.factt = item;
         },
         
         Facdmutations(state, item) {
@@ -212,6 +217,17 @@ export default new Vuex.Store({
                 let response = await axios.get(`${state.urlproduct}`);
                 commit("Productsmutations", response.data);
                 state.status = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async Facttactions({ commit, state }
+        ) {
+            try {
+                let response = await axios.get(`${state.urlfactt}`);
+                commit("Facttmutations", response.data);
+                state.status = true;
+                console.log(response.data)
             } catch (error) {
                 console.log(error);
             }

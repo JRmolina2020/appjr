@@ -12,25 +12,37 @@
                 >
                     <template #head>
                         <tr>
-                            <th>Nit</th>
+                            <th></th>
                             <th>Total</th>
                             <th>Efectivo</th>
                             <th>Tranfe</th>
-                            <th>Fecha</th>
+                            <th></th>
                             <th>Ver</th>
                             <th></th>
                         </tr>
                     </template>
                     <template #body="{ rows }">
                         <tr v-for="row in rows" :key="row.id">
-                            <td>{{ row.nit }}</td>
+                            <td>{{ row.name_client }}</td>
                             <td>${{ row.tot | currency }}</td>
                             <td>${{ row.efecty | currency }}</td>
                             <td class="bg-warning" v-if="row.other > 0">
                                 ${{ row.other | currency }}
                             </td>
                             <td v-else>${{ row.other | currency }}</td>
-                            <th>{{ row.date_facture }}</th>
+                            <td v-if="row.status">
+                                <i class="fi fi-check"> Pago</i>
+                            </td>
+                            <td v-else>
+                                <button
+                                    type="button"
+                                    class="btn btn-tool clickable"
+                                    @click="paymentstatus(row.id)"
+                                >
+                                    <i class="fi fi-close"></i>
+                                </button>
+                            </td>
+
                             <th>
                                 <button
                                     type="button"
@@ -177,12 +189,35 @@
                 </div>
             </div>
         </div>
-        <!-- end -->
-        <div class="alert alert-primary mt-3" role="alert">
-            Revisa tus ventas
+        <div class="col-lg-6 col-12">
+            <div class="table-responsive">
+                <div class="alert alert-primary mt-3" role="alert">
+                    Pendiente por cliente
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th><i class="fi fi-users"></i></th>
+                            <th>TOTAL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item in factt" :key="item.id">
+                            <td scope="row">{{ item.name_client }}</td>
+                            <td>${{ item.total_facturado | currency }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
+
+        <!-- end -->
+
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-lg-6 col-12">
+                <div class="alert alert-primary mt-3" role="alert">
+                    Revisa tus ventas
+                </div>
                 <table class="table table-bordered table-dark">
                     <tbody>
                         <tr>
@@ -286,7 +321,15 @@ export default {
         DataExample,
     },
     computed: {
-        ...mapState(["status", "urlfac", "fac", "facd", "fact", "facg"]),
+        ...mapState([
+            "status",
+            "urlfac",
+            "fac",
+            "facd",
+            "fact",
+            "facg",
+            "factt",
+        ]),
         sumProduct() {
             let tot = 0;
             this.facd.map((data) => {
@@ -339,6 +382,7 @@ export default {
             this.$store.dispatch("Facactions", obj);
             this.$store.dispatch("Facgactions", obj);
             this.$store.dispatch("Factactions", obj);
+            this.$store.dispatch("Facttactions");
         },
         getDate() {
             let obj = {
@@ -372,6 +416,16 @@ export default {
         },
         passverified() {
             this.viewpass = 1;
+        },
+        paymentstatus(id) {
+            let url = "api/factures/" + id;
+            axios.put(url).then((response) => {
+                Swal.fire({
+                    title: `${response.data.message}`,
+                    icon: "success",
+                });
+                this.getList();
+            });
         },
     },
 };

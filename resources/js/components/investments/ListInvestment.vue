@@ -1,35 +1,50 @@
 <template>
     <div>
-        <div class="card-body">
-            <div v-for="item in investments" :key="item.id">
-                <div class="card card-primary card-outline">
-                    <div class="card-header">
-                        <h5 class="card-title">{{ item.product }}</h5>
-                        <div class="card-tools">
-                            <a class="btn btn-tool"
-                                >${{ item.cost | currency }}
-                            </a>
-                            <a class="btn btn-tool">{{ item.quantity }}</a>
-                            <a class="btn btn-tool"
-                                >${{
-                                    (item.quantity * item.cost) | currency
-                                }}</a
-                            >
-
-                            <a
-                                v-if="item.stock >= item.quantity"
-                                href="#"
-                                class="btn btn-tool"
-                                @click="destroy(item.id)"
-                            >
-                                <i class="fi fi-trash"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+        <div class="form-group mt-3">
+            <input
+                type="text"
+                class="form-control"
+                v-model="filters.name.value"
+                placeholder="Buscar productos"
+            />
+        </div>
+        <div class="table-responsive mt-3">
+            <VTable
+                :data="investments"
+                :filters="filters"
+                :page-size="10"
+                :currentPage.sync="currentPage"
+                @totalPagesChanged="totalPages = $event"
+                class="table"
+            >
+                <template #head>
+                    <tr>
+                        <VTh sortKey="name">Producto</VTh>
+                        <th>Cantidad</th>
+                        <th>Precio prod</th>
+                        <th>Total i.</th>
+                        <th></th>
+                    </tr>
+                </template>
+                <template #body="{ rows }">
+                    <tr v-for="row in rows" :key="row.id">
+                        <td>{{ row.product }}</td>
+                        <td>{{ row.quantity }}</td>
+                        <td>${{ row.cost | currency }}</td>
+                        <td>${{ (row.cost * row.quantity) | currency }}</td>
+                        <td></td>
+                    </tr>
+                </template>
+            </VTable>
+            <div class="text-xs-center">
+                <VTPagination
+                    :currentPage.sync="currentPage"
+                    :total-pages="totalPages"
+                    :boundary-links="true"
+                    :maxPageLinks="4"
+                />
             </div>
         </div>
-
         <div
             class="alert alert-dark"
             v-for="(item, index) in investmentstot"
